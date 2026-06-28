@@ -27,40 +27,40 @@ public class FormMenuManagement extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel5 = new javax.swing.JLabel();
-        jButtonDetail2 = new javax.swing.JButton();
-        jTextFieldRole = new javax.swing.JTextField();
-        jButtonDetail3 = new javax.swing.JButton();
+        jButtonHapusMenu = new javax.swing.JButton();
+        jTextFieldKeterangan = new javax.swing.JTextField();
+        jButtonTambahMenu = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldUsername = new javax.swing.JTextField();
+        jTextFieldNamaMenu = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButtonBack = new javax.swing.JButton();
-        jTextFieldEmail = new javax.swing.JTextField();
+        jTextFieldkategori = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextFieldPassword = new javax.swing.JTextField();
-        jButtonDetail1 = new javax.swing.JButton();
+        jTextFieldHarga = new javax.swing.JTextField();
+        jButtonSimpanPerubahan = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
-        jTextFieldUsername1 = new javax.swing.JTextField();
+        jTextFieldSearch = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextFieldRole1 = new javax.swing.JTextField();
+        jTextFieldStatus = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel5.setText("Keterangan");
 
-        jButtonDetail2.setText("Hapus Menu");
-        jButtonDetail2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonHapusMenu.setText("Hapus Menu");
+        jButtonHapusMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail2ActionPerformed(evt);
+                jButtonHapusMenuActionPerformed(evt);
             }
         });
 
-        jButtonDetail3.setText("Tambah Menu");
-        jButtonDetail3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonTambahMenu.setText("Tambah Menu");
+        jButtonTambahMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail3ActionPerformed(evt);
+                jButtonTambahMenuActionPerformed(evt);
             }
         });
 
@@ -79,10 +79,10 @@ public class FormMenuManagement extends javax.swing.JFrame {
 
         jLabel4.setText("Harga");
 
-        jButtonDetail1.setText("Simpan Perubahan ");
-        jButtonDetail1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSimpanPerubahan.setText("Simpan Perubahan ");
+        jButtonSimpanPerubahan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail1ActionPerformed(evt);
+                jButtonSimpanPerubahanActionPerformed(evt);
             }
         });
 
@@ -133,29 +133,29 @@ public class FormMenuManagement extends javax.swing.JFrame {
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(jTextFieldRole, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(jTextFieldKeterangan, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(jTextFieldkategori, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(jTextFieldNamaMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                        .addComponent(jTextFieldHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jTextFieldRole1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(jTextFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(46, 46, 46)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButtonDetail3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jButtonDetail2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jButtonDetail1)))
+                                            .addComponent(jButtonTambahMenu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonHapusMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonSimpanPerubahan)))
                                     .addComponent(jButtonBack))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -165,7 +165,7 @@ public class FormMenuManagement extends javax.swing.JFrame {
                         .addGap(131, 131, 131)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldUsername1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -176,39 +176,39 @@ public class FormMenuManagement extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextFieldUsername1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonDetail3)
+                        .addComponent(jButtonTambahMenu)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonDetail2)
+                        .addComponent(jButtonHapusMenu)
                         .addGap(12, 12, 12)
-                        .addComponent(jButtonDetail1)
+                        .addComponent(jButtonSimpanPerubahan)
                         .addGap(38, 38, 38))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldNamaMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldkategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldHarga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldKeterangan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldRole1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -220,13 +220,13 @@ public class FormMenuManagement extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonDetail2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail2ActionPerformed
+    private void jButtonHapusMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHapusMenuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail2ActionPerformed
+    }//GEN-LAST:event_jButtonHapusMenuActionPerformed
 
-    private void jButtonDetail3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail3ActionPerformed
+    private void jButtonTambahMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahMenuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail3ActionPerformed
+    }//GEN-LAST:event_jButtonTambahMenuActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         // Tutup form History
@@ -237,9 +237,9 @@ public class FormMenuManagement extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButtonDetail1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail1ActionPerformed
+    private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail1ActionPerformed
+    }//GEN-LAST:event_jButtonSimpanPerubahanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,9 +278,9 @@ public class FormMenuManagement extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonDetail1;
-    private javax.swing.JButton jButtonDetail2;
-    private javax.swing.JButton jButtonDetail3;
+    private javax.swing.JButton jButtonHapusMenu;
+    private javax.swing.JButton jButtonSimpanPerubahan;
+    private javax.swing.JButton jButtonTambahMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -290,11 +290,11 @@ public class FormMenuManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextFieldEmail;
-    private javax.swing.JTextField jTextFieldPassword;
-    private javax.swing.JTextField jTextFieldRole;
-    private javax.swing.JTextField jTextFieldRole1;
-    private javax.swing.JTextField jTextFieldUsername;
-    private javax.swing.JTextField jTextFieldUsername1;
+    private javax.swing.JTextField jTextFieldHarga;
+    private javax.swing.JTextField jTextFieldKeterangan;
+    private javax.swing.JTextField jTextFieldNamaMenu;
+    private javax.swing.JTextField jTextFieldSearch;
+    private javax.swing.JTextField jTextFieldStatus;
+    private javax.swing.JTextField jTextFieldkategori;
     // End of variables declaration//GEN-END:variables
 }

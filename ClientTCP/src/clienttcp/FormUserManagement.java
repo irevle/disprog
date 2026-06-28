@@ -30,9 +30,9 @@ public class FormUserManagement extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jButtonBack = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButtonDetail1 = new javax.swing.JButton();
-        jButtonDetail2 = new javax.swing.JButton();
-        jButtonDetail3 = new javax.swing.JButton();
+        jButtonSimpanPerubahan = new javax.swing.JButton();
+        jButtonHapusUser = new javax.swing.JButton();
+        jButtonTambahUser = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldUsername = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -40,7 +40,7 @@ public class FormUserManagement extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextFieldPassword = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextFieldRole = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,24 +74,24 @@ public class FormUserManagement extends javax.swing.JFrame {
 
         jLabel1.setText("User Management");
 
-        jButtonDetail1.setText("Simpan Perubahan ");
-        jButtonDetail1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSimpanPerubahan.setText("Simpan Perubahan ");
+        jButtonSimpanPerubahan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail1ActionPerformed(evt);
+                jButtonSimpanPerubahanActionPerformed(evt);
             }
         });
 
-        jButtonDetail2.setText("Hapus User");
-        jButtonDetail2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonHapusUser.setText("Hapus User");
+        jButtonHapusUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail2ActionPerformed(evt);
+                jButtonHapusUserActionPerformed(evt);
             }
         });
 
-        jButtonDetail3.setText("Tambah User ");
-        jButtonDetail3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonTambahUser.setText("Tambah User ");
+        jButtonTambahUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail3ActionPerformed(evt);
+                jButtonTambahUserActionPerformed(evt);
             }
         });
 
@@ -102,6 +102,13 @@ public class FormUserManagement extends javax.swing.JFrame {
         jLabel4.setText("Password");
 
         jLabel5.setText("Role");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Customer", " " }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,7 +126,7 @@ public class FormUserManagement extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldRole, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,34 +142,35 @@ public class FormUserManagement extends javax.swing.JFrame {
                                     .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonDetail3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDetail2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDetail1)))
+                            .addComponent(jButtonTambahUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonHapusUser, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonSimpanPerubahan)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonBack)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                        .addComponent(jButtonBack))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonDetail3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addComponent(jButtonTambahUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonDetail2)
+                        .addComponent(jButtonHapusUser)
                         .addGap(12, 12, 12)
-                        .addComponent(jButtonDetail1)
+                        .addComponent(jButtonSimpanPerubahan)
                         .addGap(38, 38, 38))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -174,13 +182,11 @@ public class FormUserManagement extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)))
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jButtonBack)
                 .addGap(9, 9, 9))
         );
@@ -197,17 +203,21 @@ public class FormUserManagement extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButtonDetail1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail1ActionPerformed
+    private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail1ActionPerformed
+    }//GEN-LAST:event_jButtonSimpanPerubahanActionPerformed
 
-    private void jButtonDetail2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail2ActionPerformed
+    private void jButtonHapusUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHapusUserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail2ActionPerformed
+    }//GEN-LAST:event_jButtonHapusUserActionPerformed
 
-    private void jButtonDetail3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail3ActionPerformed
+    private void jButtonTambahUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahUserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail3ActionPerformed
+    }//GEN-LAST:event_jButtonTambahUserActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -247,9 +257,10 @@ public class FormUserManagement extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonDetail1;
-    private javax.swing.JButton jButtonDetail2;
-    private javax.swing.JButton jButtonDetail3;
+    private javax.swing.JButton jButtonHapusUser;
+    private javax.swing.JButton jButtonSimpanPerubahan;
+    private javax.swing.JButton jButtonTambahUser;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -259,7 +270,6 @@ public class FormUserManagement extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldEmail;
     private javax.swing.JTextField jTextFieldPassword;
-    private javax.swing.JTextField jTextFieldRole;
     private javax.swing.JTextField jTextFieldUsername;
     // End of variables declaration//GEN-END:variables
 }

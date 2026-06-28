@@ -26,8 +26,8 @@ public class FormTableManagement extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButtonDetail2 = new javax.swing.JButton();
-        jButtonDetail3 = new javax.swing.JButton();
+        jButtonHapusMeja = new javax.swing.JButton();
+        jButtonTambahMeja = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -37,22 +37,22 @@ public class FormTableManagement extends javax.swing.JFrame {
         jTextFieldKapasitasMeja = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButtonDetail1 = new javax.swing.JButton();
+        jButtonSimpanPerubahan = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButtonDetail2.setText("Hapus Meja");
-        jButtonDetail2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonHapusMeja.setText("Hapus Meja");
+        jButtonHapusMeja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail2ActionPerformed(evt);
+                jButtonHapusMejaActionPerformed(evt);
             }
         });
 
-        jButtonDetail3.setText("Tambah Meja");
-        jButtonDetail3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonTambahMeja.setText("Tambah Meja");
+        jButtonTambahMeja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail3ActionPerformed(evt);
+                jButtonTambahMejaActionPerformed(evt);
             }
         });
 
@@ -92,14 +92,14 @@ public class FormTableManagement extends javax.swing.JFrame {
 
         jLabel4.setText("Status Meja");
 
-        jButtonDetail1.setText("Simpan Perubahan ");
-        jButtonDetail1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSimpanPerubahan.setText("Simpan Perubahan ");
+        jButtonSimpanPerubahan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDetail1ActionPerformed(evt);
+                jButtonSimpanPerubahanActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Customer", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Terisi ", "Tidak terisi", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -133,9 +133,9 @@ public class FormTableManagement extends javax.swing.JFrame {
                                 .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonDetail3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDetail2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDetail1)))
+                            .addComponent(jButtonTambahMeja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonHapusMeja, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonSimpanPerubahan)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,17 +150,9 @@ public class FormTableManagement extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                        .addComponent(jButtonDetail3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonDetail2)
-                        .addGap(12, 12, 12)
-                        .addComponent(jButtonDetail1)
-                        .addGap(38, 38, 38))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jTextFieldNomorMeja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -171,8 +163,14 @@ public class FormTableManagement extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonTambahMeja)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonHapusMeja)
+                        .addGap(12, 12, 12)
+                        .addComponent(jButtonSimpanPerubahan)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonBack)
                 .addGap(9, 9, 9))
         );
@@ -180,13 +178,13 @@ public class FormTableManagement extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonDetail2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail2ActionPerformed
+    private void jButtonHapusMejaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHapusMejaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail2ActionPerformed
+    }//GEN-LAST:event_jButtonHapusMejaActionPerformed
 
-    private void jButtonDetail3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail3ActionPerformed
+    private void jButtonTambahMejaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahMejaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail3ActionPerformed
+    }//GEN-LAST:event_jButtonTambahMejaActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         // Tutup form History
@@ -197,9 +195,9 @@ public class FormTableManagement extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButtonDetail1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetail1ActionPerformed
+    private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonDetail1ActionPerformed
+    }//GEN-LAST:event_jButtonSimpanPerubahanActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
@@ -242,9 +240,9 @@ public class FormTableManagement extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonDetail1;
-    private javax.swing.JButton jButtonDetail2;
-    private javax.swing.JButton jButtonDetail3;
+    private javax.swing.JButton jButtonHapusMeja;
+    private javax.swing.JButton jButtonSimpanPerubahan;
+    private javax.swing.JButton jButtonTambahMeja;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
