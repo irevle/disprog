@@ -10,69 +10,60 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
+ * One thread per connected client. Reads command lines from the socket and
+ * hands them off to FormServer.handleCommand() for the actual business logic.
+ * This class does NOT talk to the database directly - it only knows about
+ * sockets and text.
  *
- * @author mohammadfaridnaufal
+ * @author alievar
  */
-public class HandleSocket extends Thread{
-    
+public class HandleSocket extends Thread {
+
     FormServer parent;
     Socket client;
     DataOutputStream out;
     BufferedReader in;
-    
-    public HandleSocket(FormServer _parent, Socket _client)
-    {
+
+    public HandleSocket(FormServer _parent, Socket _client) {
         this.parent = _parent;
         this.client = _client;
-        
-        try
-        {
+
+        try {
             out = new DataOutputStream(client.getOutputStream());
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        }
-        catch(Exception Ex)
-        {
+        } catch (Exception Ex) {
             System.out.println(Ex);
         }
     }
-    
-    public void sendChat(String tmp)
-    {
-        try
-        {
+
+    // send one line back to just THIS client (a direct reply, or a broadcast)
+    public void sendMsg(String tmp) {
+        try {
             out.writeBytes(tmp + "\n");
-        }
-        catch(Exception Ex)
-        {
+        } catch (Exception Ex) {
             System.out.println(Ex);
         }
     }
-    
+
     @Override
-    public void run()
-    {
-        sendChat("Welcome to this Group Chat");
-        parent.broadCastJoin(this, "");
-        while(true)
-        {
-            try
-            {
-                String msg = in.readLine();
-                System.out.println("masuk");
-                if(msg.contains(";-joins"))
-                {
-                    parent.broadCastJoin(this, msg);
+    public void run() {
+        sendMsg("OK|Connected to Food Reservation Server");
+        while (true) {
+            try {
+                String command = in.readLine();
+                if (command == null) {
+                    // client disconnected
+                    parent.removeClient(this);
+                    break;
                 }
-                else
-                {
-                    parent.showChat(msg);
-                }
+                System.out.println("Received: " + command);
+                parent.handleCommand(this, command);
+            } catch (Exception Ex) {
+                System.out.println("Error HandleSocket run: " + Ex);
+                parent.removeClient(this);
+                break;
             }
-            catch(Exception Ex)
-            {
-                System.out.println(Ex);
-            } 
         }
     }
-            
+
 }
