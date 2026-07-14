@@ -7,6 +7,7 @@ import com.foodreservation.model.MenuItem;
 import com.foodreservation.model.OrderItem;
 import com.foodreservation.model.Reservation;
 import com.foodreservation.model.User;
+import com.foodreservation.model.Table;
 import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -24,12 +25,14 @@ public class FoodReservationWS {
     MenuItem menuModel;
     Reservation reservationModel;
     OrderItem orderModel;
+    Table tableModel;
 
     public FoodReservationWS() {
         userModel = new User();
         menuModel = new MenuItem();
         reservationModel = new Reservation();
         orderModel = new OrderItem();
+        tableModel = new Table();
     }
 
     @WebMethod(operationName = "checkLogin")
@@ -99,5 +102,72 @@ public class FoodReservationWS {
     @WebMethod(operationName = "viewOrderItems")
     public ArrayList<String> viewOrderItems(@WebParam(name = "reservationId") int reservationId) {
         return orderModel.viewOrderItems(reservationId);
+    }
+    @WebMethod(operationName = "getUserRole")
+    public String getUserRole(@WebParam(name = "username") String username) {
+        User u = new User();
+        return u.getUserRole(username);
+    }
+    @WebMethod
+    public boolean addTable(String tableNumber, int capacity, String status) {
+        try {
+            Table t = new Table();
+
+            t.setTableNumber(tableNumber);
+            t.setCapacity(capacity);
+            t.setStatus(status);
+
+            t.insertData();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+  
+    @WebMethod
+    public boolean deleteTable(int id) {
+        try {
+            Table t = new Table();
+
+            t.setId(id);
+
+            t.deleteData();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @WebMethod
+    public boolean updateTable(int id,
+                               String tableNumber,
+                               int capacity,
+                               String status) {
+
+        try {
+
+            Table t = new Table();
+
+            t.setId(id);
+            t.setTableNumber(tableNumber);
+            t.setCapacity(capacity);
+            t.setStatus(status);
+
+            t.updateData();
+
+            return true;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return false;
+
+        }
     }
 }

@@ -3,18 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ASUS
  */
 public class FormTableManagement extends javax.swing.JFrame {
-
+    private String currentUser;
     /**
      * Creates new form FormTableManagement
      */
-    public FormTableManagement() {
+    public FormTableManagement(String username) {
         initComponents();
+        this.currentUser = username;
     }
 
     /**
@@ -179,11 +184,62 @@ public class FormTableManagement extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonHapusMejaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHapusMejaActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih meja yang mau dihapus!");
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int nomorMeja = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
+
+            boolean hasil = port.deleteTable(nomorMeja);
+
+            if (hasil) {
+                model.removeRow(selectedRow);
+                JOptionPane.showMessageDialog(this, "Meja berhasil dihapus!");
+            }
+
+            model.removeRow(selectedRow);
+            JOptionPane.showMessageDialog(this, "Meja berhasil dihapus!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal hapus meja: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonHapusMejaActionPerformed
 
     private void jButtonTambahMejaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahMejaActionPerformed
-        // TODO add your handling code here:
+        try {
+            int nomorMeja = Integer.parseInt(jTextFieldNomorMeja.getText());
+            int kapasitas = Integer.parseInt(jTextFieldKapasitasMeja.getText());
+            String status = (String) jComboBox1.getSelectedItem();
+
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
+
+            boolean hasil = port.addTable(
+                String.valueOf(nomorMeja),
+                kapasitas,
+                status
+            );
+
+            if (hasil) {
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.addRow(new Object[]{nomorMeja, kapasitas, status});
+
+                JOptionPane.showMessageDialog(this, "Meja berhasil ditambahkan!");
+            }
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.addRow(new Object[]{nomorMeja, kapasitas, status});
+
+            JOptionPane.showMessageDialog(this, "Meja berhasil ditambahkan!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal tambah meja: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonTambahMejaActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
@@ -191,12 +247,39 @@ public class FormTableManagement extends javax.swing.JFrame {
         this.dispose();
 
         // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard();
+        FormDashboard dashboard = new FormDashboard(currentUser);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih meja yang mau diupdate!");
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int nomorMeja = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+            int kapasitas = Integer.parseInt(model.getValueAt(selectedRow, 1).toString());
+            String status = model.getValueAt(selectedRow, 2).toString();
+
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
+
+            boolean hasil = port.updateTable(
+                nomorMeja,
+                String.valueOf(nomorMeja),
+                kapasitas,
+                status
+            );
+
+            if (hasil) {
+                JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonSimpanPerubahanActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -233,7 +316,7 @@ public class FormTableManagement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormTableManagement().setVisible(true);
+                new FormTableManagement("guest").setVisible(true);
             }
         });
     }

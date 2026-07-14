@@ -3,18 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import com.foodreservation.model.User;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ASUS
  */
 public class FormUserManagement extends javax.swing.JFrame {
-
+    private String currentUser;
     /**
      * Creates new form FormUserManagerment
      */
-    public FormUserManagement() {
+    public FormUserManagement(String username) {
         initComponents();
+        this.currentUser = username;
     }
 
     /**
@@ -199,20 +203,93 @@ public class FormUserManagement extends javax.swing.JFrame {
         this.dispose();
 
         // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard();
+        FormDashboard dashboard = new FormDashboard(currentUser);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih user yang mau diupdate!");
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            String username = (String) model.getValueAt(selectedRow, 0);
+            String email = (String) model.getValueAt(selectedRow, 1);
+            String password = (String) model.getValueAt(selectedRow, 2);
+            String role = (String) model.getValueAt(selectedRow, 3);
+
+            User u = new User();
+            for (String data : u.viewListDataString()) {
+                String[] parts = data.split(";");
+                if (parts[1].equals(username)) {
+                    u.id = Integer.parseInt(parts[0]);
+                    break;
+                }
+            }
+            u.username = username;
+            u.password = password;
+            u.email = email;
+            u.role = role;
+            u.updateData();
+
+            JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonSimpanPerubahanActionPerformed
 
     private void jButtonHapusUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHapusUserActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih user yang mau dihapus!");
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            String username = (String) model.getValueAt(selectedRow, 0);
+
+            User u = new User();
+            for (String data : u.viewListDataString()) {
+                String[] parts = data.split(";");
+                if (parts[1].equals(username)) {
+                    u.id = Integer.parseInt(parts[0]);
+                    break;
+                }
+            }
+            u.deleteData();
+
+            model.removeRow(selectedRow);
+            JOptionPane.showMessageDialog(this, "User berhasil dihapus!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal hapus user: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonHapusUserActionPerformed
 
     private void jButtonTambahUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahUserActionPerformed
-        // TODO add your handling code here:
+        try {
+            String username = jTextFieldUsername.getText();
+            String email = jTextFieldEmail.getText();
+            String password = jTextFieldPassword.getText();
+            String role = (String) jComboBox1.getSelectedItem();
+
+            User u = new User();
+            u.username = username;
+            u.password = password;
+            u.email = email;
+            u.role = role;
+            u.insertData();
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.addRow(new Object[]{username, email, password, role});
+
+            JOptionPane.showMessageDialog(this, "User berhasil ditambahkan!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal tambah user: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonTambahUserActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -250,7 +327,7 @@ public class FormUserManagement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormUserManagement().setVisible(true);
+                new FormUserManagement("guest").setVisible(true);
             }
         });
     }

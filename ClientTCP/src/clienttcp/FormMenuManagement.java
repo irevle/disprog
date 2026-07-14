@@ -3,18 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import com.foodreservation.model.MenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ASUS
  */
 public class FormMenuManagement extends javax.swing.JFrame {
-
+private String currentUser;
     /**
      * Creates new form FormMenuManagement
      */
-    public FormMenuManagement() {
+    public FormMenuManagement(String username) {
         initComponents();
+        this.currentUser = username;
     }
 
     /**
@@ -221,11 +224,59 @@ public class FormMenuManagement extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonHapusMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHapusMenuActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable2.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih menu yang mau dihapus!");
+            return;
+        }
+
+        try {
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable2.getModel();
+            String nama = (String) model.getValueAt(selectedRow, 0);
+
+            // cari id menu berdasarkan nama
+            MenuItem m = new MenuItem();
+            for (String data : m.viewListDataString()) {
+                String[] parts = data.split(";");
+                if (parts[1].equals(nama)) {
+                    m.id = Integer.parseInt(parts[0]);
+                    break;
+                }
+            }
+            m.deleteData();
+
+            model.removeRow(selectedRow);
+            JOptionPane.showMessageDialog(this, "Menu berhasil dihapus!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal hapus menu: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonHapusMenuActionPerformed
 
     private void jButtonTambahMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahMenuActionPerformed
-        // TODO add your handling code here:
+        try {
+            String nama = jTextFieldNamaMenu.getText();
+            String kategori = jTextFieldkategori.getText();
+            double harga = Double.parseDouble(jTextFieldHarga.getText());
+            String keterangan = jTextFieldKeterangan.getText();
+            String status = jTextFieldStatus.getText();
+
+            MenuItem m = new MenuItem();
+            // set field sesuai input
+            m.name = nama;
+            m.category = kategori;
+            m.price = harga;
+            m.description = keterangan;
+            m.available = status.equalsIgnoreCase("available");
+
+            m.insertData();
+
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable2.getModel();
+            model.addRow(new Object[]{nama, kategori, harga, keterangan, status});
+
+            JOptionPane.showMessageDialog(this, "Menu berhasil ditambahkan!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal tambah menu: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonTambahMenuActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
@@ -233,12 +284,46 @@ public class FormMenuManagement extends javax.swing.JFrame {
         this.dispose();
 
         // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard();
+        FormDashboard dashboard = new FormDashboard(currentUser);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable2.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih menu yang mau diupdate!");
+            return;
+        }
+
+        try {
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable2.getModel();
+
+            String nama = (String) model.getValueAt(selectedRow, 0);
+            String kategori = (String) model.getValueAt(selectedRow, 1);
+            double harga = Double.parseDouble(model.getValueAt(selectedRow, 2).toString());
+            String keterangan = (String) model.getValueAt(selectedRow, 3);
+            String status = (String) model.getValueAt(selectedRow, 4);
+
+            MenuItem m = new MenuItem();
+            for (String data : m.viewListDataString()) {
+                String[] parts = data.split(";");
+                if (parts[1].equals(nama)) {
+                    m.id = Integer.parseInt(parts[0]);
+                    break;
+                }
+            }
+            m.name = nama;
+            m.category = kategori;
+            m.price = harga;
+            m.description = keterangan;
+            m.available = status.equalsIgnoreCase("available");
+
+            m.updateData();
+
+            JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonSimpanPerubahanActionPerformed
 
     /**
@@ -271,7 +356,7 @@ public class FormMenuManagement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMenuManagement().setVisible(true);
+                new FormMenuManagement("guest").setVisible(true);
             }
         });
     }

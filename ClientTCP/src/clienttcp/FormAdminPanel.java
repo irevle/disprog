@@ -11,12 +11,14 @@ import javax.swing.JOptionPane;
  * @author ASUS
  */
 public class FormAdminPanel extends javax.swing.JFrame {
-
+    private String currentUser;
     /**
      * Creates new form FormAdminPanel
      */
-    public FormAdminPanel() {
+    public FormAdminPanel(String username) {
         initComponents();
+        this.currentUser = username;
+        jLabelUser.setText(username); // tampilkan nama admin
     }
 
     /**
@@ -178,7 +180,7 @@ public class FormAdminPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnMenuManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMenuManagementActionPerformed
-        FormMenuManagement menuForm = new FormMenuManagement();
+        FormMenuManagement menuForm = new FormMenuManagement(currentUser);
         menuForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnMenuManagementActionPerformed
@@ -189,34 +191,35 @@ public class FormAdminPanel extends javax.swing.JFrame {
 
     private void jButtonCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancel1ActionPerformed
         int confirm = JOptionPane.showConfirmDialog(this,
-            "Apakah Anda yakin ingin keluar?",
-            "Konfirmasi Exit",
+            "Apakah Anda yakin ingin logout?",
+            "Konfirmasi Logout",
             JOptionPane.YES_NO_OPTION);
         if(confirm == JOptionPane.YES_OPTION) {
-            System.exit(0);
+            this.dispose();
+            new FormLogin().setVisible(true);
         }
     }//GEN-LAST:event_jButtonCancel1ActionPerformed
 
     private void BtnUserManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUserManagementActionPerformed
-        FormUserManagement userForm = new FormUserManagement();
+        FormUserManagement userForm = new FormUserManagement(currentUser);
         userForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnUserManagementActionPerformed
 
     private void BtnFoodOrderSystermActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnFoodOrderSystermActionPerformed
-        FormFoodOrdering foodForm = new FormFoodOrdering();
+        FormFoodOrdering foodForm = new FormFoodOrdering(currentUser);
         foodForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnFoodOrderSystermActionPerformed
 
     private void BtnTableManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTableManagementActionPerformed
-        FormTableManagement tableForm = new FormTableManagement();
+        FormTableManagement tableForm = new FormTableManagement(currentUser);
         tableForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnTableManagementActionPerformed
 
     private void BtnReservationSystemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnReservationSystemActionPerformed
-        FormReservation reservationForm = new FormReservation();
+        FormReservation reservationForm = new FormReservation(currentUser);
         reservationForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnReservationSystemActionPerformed
@@ -251,7 +254,7 @@ public class FormAdminPanel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormAdminPanel().setVisible(true);
+                new FormAdminPanel("admin").setVisible(true);
             }
         });
     }

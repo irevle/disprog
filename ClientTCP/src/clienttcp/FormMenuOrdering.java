@@ -11,12 +11,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormMenuOrdering extends javax.swing.JFrame {
     DefaultTableModel model;
+    private String currentUser;
     /**
      * Creates new form FormMenuOrdering
      */
-    public FormMenuOrdering() {
+    public FormMenuOrdering(String username) {
         initComponents();
         initTable();
+        this.currentUser = username;
     }
     
     private void initTable() {
@@ -25,6 +27,7 @@ public class FormMenuOrdering extends javax.swing.JFrame {
         );
         jTableMenuOrdering.setModel(model);
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -230,24 +233,70 @@ public class FormMenuOrdering extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddItemActionPerformed
-        String menu = (String) jComboBoxMenu.getSelectedItem();
-        //int harga = getHarga(menu);
-        int jumlah = Integer.parseInt(jTextFieldJumlah.getText());
-        //int subtotal = harga * jumlah;
+        try {
+            String menu = (String) jComboBoxMenu.getSelectedItem();
+            int harga = 0;
+            int menuItemId = 0;
 
-       
-        //model.addRow(new Object[]{menu, jumlah, subtotal, "Pending"});
-        updateTotal();
+            // tentukan harga dan id berdasarkan menu
+            if(menu.equals("Nasi Goreng")) {
+                harga = 15000; menuItemId = 1;
+            } else if(menu.equals("Mie Goreng")) {
+                harga = 12000; menuItemId = 2;
+            } else if(menu.equals("Soto Ayam")) {
+                harga = 18000; menuItemId = 3;
+            } else if(menu.equals("Rawon")) {
+                harga = 20000; menuItemId = 4;
+            } else if(menu.equals("Bakso")) {
+                harga = 15000; menuItemId = 5;
+            } else if(menu.equals("Gado-Gado")) {
+                harga = 10000; menuItemId = 6;
+            } else if(menu.equals("Rendang")) {
+                harga = 25000; menuItemId = 7;
+            }
+
+            int jumlah = Integer.parseInt(jTextFieldJumlah.getText());
+            int subtotal = harga * jumlah;
+
+            // tampilkan harga di textfield
+            jTextFieldHarga.setText(String.valueOf(harga));
+
+            // tambahkan ke tabel
+            model.addRow(new Object[]{menu, jumlah, subtotal, "Pending"});
+            updateTotal();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Input jumlah tidak valid!");
+        }
     }//GEN-LAST:event_jButtonAddItemActionPerformed
 
     private void jButtonPesanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesanActionPerformed
-        try{
-            // isi code 
-            //codenya belum legkap 
-            
-            
-        }catch (Exception e){
-             jLabelStatusOrder.setText("Gagal kirim order: " + e.getMessage());
+        try {
+            OrderItem orderItem = new OrderItem();
+            int reservationId = 1; // sesuaikan dengan reservasi aktif
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String menu = (String) model.getValueAt(i, 0);
+                int jumlah = (int) model.getValueAt(i, 1);
+                int subtotal = (int) model.getValueAt(i, 2);
+
+                int menuItemId = 0;
+                if(menu.equals("Nasi Goreng")) menuItemId = 1;
+                else if(menu.equals("Mie Goreng")) menuItemId = 2;
+                else if(menu.equals("Soto Ayam")) menuItemId = 3;
+                else if(menu.equals("Rawon")) menuItemId = 4;
+                else if(menu.equals("Bakso")) menuItemId = 5;
+                else if(menu.equals("Gado-Gado")) menuItemId = 6;
+                else if(menu.equals("Rendang")) menuItemId = 7;
+
+                boolean success = orderItem.createOrderItem(reservationId, menuItemId, jumlah, subtotal);
+                if (!success) {
+                    jLabelStatusOrder.setText("Gagal simpan order untuk " + menu);
+                    return;
+                }
+            }
+            jLabelStatusOrder.setText("Order berhasil dikirim!");
+        } catch (Exception e) {
+            jLabelStatusOrder.setText("Gagal kirim order: " + e.getMessage());
         }
     }//GEN-LAST:event_jButtonPesanActionPerformed
 
@@ -303,7 +352,7 @@ public class FormMenuOrdering extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMenuOrdering().setVisible(true);
+                new FormMenuOrdering("guest").setVisible(true);
             }
         });
     }

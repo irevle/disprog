@@ -4,6 +4,9 @@
  */
 package clienttcp;
 
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
+
 /**
  *
  * @author ASUS
@@ -31,9 +34,9 @@ public class FormLogin extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        txtUsername = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnRegisterForm = new javax.swing.JButton();
+        txtUsername = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,8 +54,6 @@ public class FormLogin extends javax.swing.JFrame {
         });
 
         jLabel3.setText("Username ");
-
-        txtUsername.setEnabled(false);
 
         jLabel4.setText("Don't have account ");
 
@@ -80,9 +81,9 @@ public class FormLogin extends javax.swing.JFrame {
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                                    .addComponent(txtUsername))))
                         .addGap(96, 96, 96))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnLogin)
@@ -92,7 +93,7 @@ public class FormLogin extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRegisterForm)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 127, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,16 +122,38 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
-            String chatClient, chatNama;
+            String username = txtUsername.getText();
+            String password = txtPassword.getText();
 
-       
-            chatClient = txtPassword.getText();
-            chatNama = txtUsername.getText();
+            if(username.isEmpty() || password.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Username dan Password wajib diisi!");
+                return;
+            }
 
-            //sendChat(chatNama + ": "+ chatClient);
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
+
+            boolean loginResult = port.checkLogin(username, password);
+
+            if (loginResult) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Login berhasil!");
+
+                // pastikan server sudah punya method getUserRole
+                String role = port.getUserRole(username);
+
+                if("Admin".equalsIgnoreCase(role)) {
+                    new FormAdminPanel(username).setVisible(true);
+                } else {
+                    new FormDashboard(username).setVisible(true);
+                }
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Login gagal, periksa username/password.");
+            }
 
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi error: " + e.getMessage());
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

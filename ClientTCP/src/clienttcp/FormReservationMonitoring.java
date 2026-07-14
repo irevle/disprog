@@ -3,18 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ASUS
  */
 public class FormReservationMonitoring extends javax.swing.JFrame {
-
+    private String currentUser;
     /**
      * Creates new form FormReservationMonitoring
      */
-    public FormReservationMonitoring() {
+    public FormReservationMonitoring(String username) {
         initComponents();
+        this.currentUser = username;
     }
 
     /**
@@ -232,11 +237,65 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHapusActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih reservasi yang mau dihapus!");
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int meja = Integer.parseInt(model.getValueAt(selectedRow, 2).toString());
+
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
+
+            // reservationId, bukan nomor meja
+            boolean berhasil = port.cancelReservation(reservationId);
+
+            if (berhasil) {
+                model.removeRow(selectedRow);
+            }
+
+            model.removeRow(selectedRow);
+            JOptionPane.showMessageDialog(this, "Reservasi berhasil dihapus!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal hapus reservasi: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonHapusActionPerformed
 
     private void jButtonTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahActionPerformed
-        // TODO add your handling code here:
+        try {
+            String tanggal = jTextFieldUsername2.getText();
+            String jam = jTextFieldUsername.getText();
+            int meja = Integer.parseInt(jTextFieldEmail.getText());
+            int tamu = Integer.parseInt(jTextFieldPassword.getText());
+            String status = (String) jComboBox1.getSelectedItem();
+
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
+
+            // Contoh userId, sesuaikan dengan user yang login
+            int userId = 1;
+
+            int reservationId = port.createReservation(
+                userId,
+                tanggal,
+                jam,
+                jam,
+                tamu,
+                status
+            );
+
+            if (reservationId > 0) {
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.addRow(new Object[]{tanggal, jam, meja, tamu, status});
+            }
+
+            JOptionPane.showMessageDialog(this, "Reservasi berhasil ditambahkan!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal tambah reservasi: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonTambahActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
@@ -244,12 +303,37 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
         this.dispose();
 
         // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard();
+        FormDashboard dashboard = new FormDashboard(currentUser);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih reservasi yang mau diupdate!");
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            String tanggal = model.getValueAt(selectedRow, 0).toString();
+            String jam = model.getValueAt(selectedRow, 1).toString();
+            int meja = Integer.parseInt(model.getValueAt(selectedRow, 2).toString());
+            int tamu = Integer.parseInt(model.getValueAt(selectedRow, 3).toString());
+            String status = model.getValueAt(selectedRow, 4).toString();
+
+            Reservation r = new Reservation();
+            r.setTanggal(tanggal);
+            r.setJam(jam);
+            r.setMeja(meja);
+            r.setJumlahTamu(tamu);
+            r.setStatus(status);
+            r.updateData();
+
+            JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonSimpanPerubahanActionPerformed
 
     private void jButtonDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetailActionPerformed
@@ -257,7 +341,19 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDetailActionPerformed
 
     private void jButtonFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFindActionPerformed
-        // TODO add your handling code here:
+        try {
+            String keyword = jTextFieldUsername1.getText();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+
+            Reservation r = new Reservation();
+            for (String data : r.searchByKeyword(keyword)) {
+                String[] parts = data.split(";");
+                model.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal mencari: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButtonFindActionPerformed
 
     /**
@@ -290,7 +386,7 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormReservationMonitoring().setVisible(true);
+                new FormReservationMonitoring("guest").setVisible(true);
             }
         });
     }

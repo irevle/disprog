@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
+import com.foodreservation.service.RegisterResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -136,11 +140,25 @@ public class FormRegister extends javax.swing.JFrame {
             String username = txtUsername.getText();
             String password = txtPassword.getText();
 
+            if(email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Semua field wajib diisi!");
+                return;
+            }
 
-            //sendChat(email + ":" + username + ":" + password);
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
+
+            boolean success = port.register(username, password, "Nama Lengkap Default", email, "08123456789");
+
+            if(success) {
+                JOptionPane.showMessageDialog(this, "Registrasi berhasil!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Registrasi gagal!");
+            }
 
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi error: " + e.getMessage());
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 

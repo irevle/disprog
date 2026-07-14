@@ -5,18 +5,21 @@
 package clienttcp;
 
 import javax.swing.JOptionPane;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
 
 /**
  *
  * @author ASUS
  */
 public class FormReservation extends javax.swing.JFrame {
-
+    private String currentUser;
     /**
      * Creates new form FormReservation
      */
-    public FormReservation() {
+    public FormReservation(String username) {
         initComponents();
+        this.currentUser = username;
     }
 
     /**
@@ -167,29 +170,33 @@ public class FormReservation extends javax.swing.JFrame {
 
     private void jButtonReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservationActionPerformed
          try {
-            // Ambil data dari UI
             String tanggal = (String) jComboBoxTanggal.getSelectedItem();
             String waktuMulai = (String) jComboBoxWaktu.getSelectedItem();
             String waktuSelesai = (String) jComboBoxWaktu1.getSelectedItem();
-            String jmlTamu = jTextFieldJlmTamu.getText();
+            String jmlTamuStr = jTextFieldJlmTamu.getText();
 
-          
-            if(tanggal == null || waktuMulai == null || waktuSelesai == null || jmlTamu.isEmpty()) {
+            if(tanggal == null || waktuMulai == null || waktuSelesai == null || jmlTamuStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Semua field wajib diisi!");
                 return;
             }
 
-          
-            String request = "RESERVATION;" + tanggal + ";" + waktuMulai + ";" + waktuSelesai + ";" + jmlTamu;
+            int jmlTamu = Integer.parseInt(jmlTamuStr);
 
-           
-            //sendChat(request);
+            // Panggil web service
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
 
-            // Update label meja & status (dummy, nanti dari server)
-            jLabelMejaTamu.setText("T03"); 
-            jLabelStatus.setText("PENDING");
+            // asumsi createReservation return int (reservationId)
+            int reservationId = port.createReservation( /* userId */ 1, tanggal, waktuMulai, waktuSelesai, jmlTamu, "");
 
-            JOptionPane.showMessageDialog(this, "Reservasi berhasil dikirim!");
+            if(reservationId > 0) {
+                jLabelMejaTamu.setText("Meja berhasil dialokasikan");
+                jLabelStatus.setText("CONFIRMED");
+                JOptionPane.showMessageDialog(this, "Reservasi berhasil! ID: " + reservationId);
+            } else {
+                jLabelStatus.setText("FAILED");
+                JOptionPane.showMessageDialog(this, "Reservasi gagal, coba waktu lain.");
+            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
@@ -197,7 +204,7 @@ public class FormReservation extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonReservationActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        FormDashboard dashboard = new FormDashboard();
+        FormDashboard dashboard = new FormDashboard(currentUser);
         dashboard.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonCancelActionPerformed
@@ -233,7 +240,7 @@ public class FormReservation extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormReservation().setVisible(true);
+                new FormReservation("Guest").setVisible(true);
             }
         });
     }

@@ -11,13 +11,17 @@ import javax.swing.JOptionPane;
  * @author ASUS
  */
 public class FormDashboard extends javax.swing.JFrame {
-
+    private String currentUser;
     /**
      * Creates new form FormDashboard
      */
-    public FormDashboard() {
+    public FormDashboard(String username) {
         initComponents();
+        this.currentUser = username;
+        jLabelUser.setText(username);
     }
+  
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -156,30 +160,31 @@ public class FormDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonExitActionPerformed
 
     private void jButtonHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHistoryActionPerformed
-        FormHistory historyForm = new FormHistory();
+        FormHistory historyForm = new FormHistory(currentUser);
         historyForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonHistoryActionPerformed
 
     private void jButtonMenuOrderingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMenuOrderingActionPerformed
-        FormMenuOrdering menuForm = new FormMenuOrdering();
+        FormMenuOrdering menuForm = new FormMenuOrdering(currentUser);
         menuForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonMenuOrderingActionPerformed
 
     private void jButtonReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservationActionPerformed
-        FormReservation reservationForm = new FormReservation();
+        FormReservation reservationForm = new FormReservation(currentUser);
         reservationForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonReservationActionPerformed
 
     private void jButtonCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancel1ActionPerformed
         int confirm = JOptionPane.showConfirmDialog(this, 
-            "Apakah Anda yakin ingin keluar?", 
-            "Konfirmasi Exit", 
+            "Apakah Anda yakin ingin logout?", 
+            "Konfirmasi Logout", 
             JOptionPane.YES_NO_OPTION);
         if(confirm == JOptionPane.YES_OPTION) {
-            System.exit(0);
+            new FormLogin().setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_jButtonCancel1ActionPerformed
 
@@ -214,7 +219,7 @@ public class FormDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormDashboard().setVisible(true);
+                new FormDashboard("guest").setVisible(true);
             }
         });
     }

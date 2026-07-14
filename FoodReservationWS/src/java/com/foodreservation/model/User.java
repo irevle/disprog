@@ -48,6 +48,27 @@ public class User extends MyModel {
         }
         return found;
     }
+    
+    public String getUserRole(String username) {
+        String role = "Customer";
+        try {
+            if (!MyModel.conn.isClosed()) {
+                PreparedStatement sql = MyModel.conn.prepareStatement(
+                    "SELECT role FROM users WHERE username = ?"
+                );
+                sql.setString(1, username);
+                this.result = sql.executeQuery();
+                if (this.result.next()) {
+                    role = this.result.getString("role");
+                }
+                sql.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error getUserRole " + e);
+        }
+        return role;
+    }
+
 
     public boolean register(String username, String password, String fullName,
                             String email, String phone) {

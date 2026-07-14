@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
+
 /**
  *
  * @author ASUS
@@ -16,12 +19,17 @@ import java.io.PrintWriter;
 public class FormHistory extends javax.swing.JFrame {
     DefaultTableModel modelReservasi;
     DefaultTableModel modelPesanan;
+    FoodReservationWS_Service service = new FoodReservationWS_Service();
+    FoodReservationWS port = service.getFoodReservationWSPort();
+
+    private String currentUser;
     /**
      * Creates new form FormHistory
      */
-    public FormHistory() {
+    public FormHistory(String username) {
         initComponents();
         initTables();
+        this.currentUser = username;
     }
     private void initTables() {
         modelReservasi = new DefaultTableModel(
@@ -136,26 +144,20 @@ public class FormHistory extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     //kode belum lengkap 
     private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
-         try {
-            // Clear tabel reservasi
+        try {
             modelReservasi.setRowCount(0);
 
-            // Simulasi ambil data dari server TCP
-            Socket socket = new Socket("localhost", 1234);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
 
-            out.println("GET_HISTORY|U001"); // contoh userId
+            // Ambil semua reservasi user (contoh userId U001)
+            java.util.List<String> reservations = port.viewReservations("U001");
 
-            String line;
-            while ((line = in.readLine()) != null) {
-                if (line.equals("END")) break;
-                // Format: tanggal|jam|meja|tamu|status
-                String[] parts = line.split("\\|");
+            // Format data: tanggal;jam;meja;tamu;status
+            for (String res : reservations) {
+                String[] parts = res.split(";");
                 modelReservasi.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
             }
-
-            socket.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal ambil history: " + e.getMessage());
         }
@@ -169,29 +171,22 @@ public class FormHistory extends javax.swing.JFrame {
         }
 
         try {
-            // Ambil ID reservasi dari server (di sini simulasi pakai index baris)
+            // Ambil reservationId dari tabel (misalnya kolom Meja atau ID sebenarnya)
             String reservationId = String.valueOf(selectedRow + 1);
 
-            // Clear tabel pesanan
             modelPesanan.setRowCount(0);
             jTable1.setModel(modelPesanan);
 
-            // Simulasi ambil data pesanan dari server TCP
-            Socket socket = new Socket("localhost", 1234);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            FoodReservationWS_Service service = new FoodReservationWS_Service();
+            FoodReservationWS port = service.getFoodReservationWSPort();
 
-            out.println("GET_ORDER|" + reservationId);
+            java.util.List<String> orders = port.viewOrderItems(Integer.parseInt(reservationId));
 
-            String line;
-            while ((line = in.readLine()) != null) {
-                if (line.equals("END")) break;
-                // Format: menu|qty|subtotal|status
-                String[] parts = line.split("\\|");
-                modelPesanan.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3]});
+            // Format data: id;reservationId;menuName;qty;subtotal;status
+            for (String ord : orders) {
+                String[] parts = ord.split(";");
+                modelPesanan.addRow(new Object[]{parts[2], parts[3], parts[4], parts[5]});
             }
-
-            socket.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal ambil detail: " + e.getMessage());
         }
@@ -202,7 +197,7 @@ public class FormHistory extends javax.swing.JFrame {
         this.dispose();
 
         // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard();
+        FormDashboard dashboard = new FormDashboard(currentUser);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -237,7 +232,7 @@ public class FormHistory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormHistory().setVisible(true);
+                new FormHistory("guest").setVisible(true);
             }
         });
     }
