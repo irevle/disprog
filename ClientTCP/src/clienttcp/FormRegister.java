@@ -32,10 +32,10 @@ public class FormRegister extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         btnRegister = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        txtEmail = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         btnCancel = new javax.swing.JButton();
+        txtEmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,11 +54,8 @@ public class FormRegister extends javax.swing.JFrame {
 
         jLabel3.setText("Email");
 
-        txtEmail.setEnabled(false);
-
         jLabel4.setText("Username ");
 
-        txtUsername.setEnabled(false);
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsernameActionPerformed(evt);
@@ -99,9 +96,10 @@ public class FormRegister extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(44, 44, 44)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

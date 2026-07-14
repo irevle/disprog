@@ -205,8 +205,8 @@ public class FormUserManagement extends javax.swing.JFrame {
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         this.dispose();
-        FormDashboard dashboard = new FormDashboard(socket, currentUser, 0);
-        dashboard.setVisible(true);
+        FormAdminPanel admin = new FormAdminPanel(socket, currentUser, 0);
+        admin.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonSimpanPerubahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSimpanPerubahanActionPerformed

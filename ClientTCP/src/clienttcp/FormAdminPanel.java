@@ -123,7 +123,7 @@ public class FormAdminPanel extends javax.swing.JFrame {
             }
         });
 
-        BtnReservationSystem.setText("Reservation System");
+        BtnReservationSystem.setText("Reservation Monitoring");
         BtnReservationSystem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnReservationSystemActionPerformed(evt);
@@ -208,8 +208,8 @@ public class FormAdminPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnTableManagementActionPerformed
 
     private void BtnReservationSystemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnReservationSystemActionPerformed
-        FormReservation reservationForm = new FormReservation(socket, currentUser, userId);
-        reservationForm.setVisible(true);
+        FormReservationMonitoring reservationMonitoring = new FormReservationMonitoring(socket, currentUser, userId);
+        reservationMonitoring.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnReservationSystemActionPerformed
 

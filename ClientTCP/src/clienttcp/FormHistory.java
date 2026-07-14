@@ -29,6 +29,7 @@ public class FormHistory extends javax.swing.JFrame {
      * Creates new form FormHistory
      */
     public FormHistory(SocketClient socket, String username, int userId) {
+        initComponents();
         initTables();
         this.socket = socket;
         this.currentUser = username;

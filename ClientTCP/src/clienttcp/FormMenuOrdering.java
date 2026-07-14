@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 public class FormMenuOrdering extends javax.swing.JFrame {
     DefaultTableModel model;
     private String currentUser;
+    private int userId;
     private SocketClient socket;
     /**
      * Creates new form FormMenuOrdering
@@ -21,6 +22,7 @@ public class FormMenuOrdering extends javax.swing.JFrame {
         initTable();
         this.socket = socket;
         this.currentUser = username;
+        this.userId = userId;
     }
     
     private void initTable() {
@@ -312,6 +314,8 @@ public class FormMenuOrdering extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRemoveItemActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, userId);
+        dashboard.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonCancelActionPerformed
     
