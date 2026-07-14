@@ -72,7 +72,7 @@ public class FormReservation extends javax.swing.JFrame {
 
         jLabel3.setText("Jumlah tamu");
 
-        jComboBoxTanggal.setModel(new javax.swing.DefaultComboBoxModel<>());
+        jComboBoxTanggal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 July 2026", "2 July 2026", "3 July 2026", "4 July 2026", "5 July 2026", "6 July 2026", "7 July 2026", "8 July 2026", "9 July 2026", "10 July 2026", "11 July 2026", "12 July 2026", "13 July 2026", "14 July 2026", "15 July 2026", "16 July 2026", "17 July 2026", "18 July 2026", "19 July 2026", "20 July 2026", "21 July 2026", "22 July 2026", "23 July 2026", "24 July 2026", "25 July 2026", "26 July 2026", "27 July 2026", "28 July 2026", "29 July 2026", "30 July 2026", "31 July 2026", " " }));
 
         jButtonReservation.setText("Reservation");
         jButtonReservation.addActionListener(new java.awt.event.ActionListener() {
@@ -81,7 +81,7 @@ public class FormReservation extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxWaktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" }));
+        jComboBoxWaktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", " " }));
 
         jLabel4.setText("Reservation");
 
@@ -96,9 +96,9 @@ public class FormReservation extends javax.swing.JFrame {
 
         jLabel6.setText("Waktu selesai");
 
-        jComboBoxWaktu1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" }));
+        jComboBoxWaktu1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", " " }));
 
-        jLabel7.setText("meja tamu :");
+        jLabel7.setText("Nomor Meja:");
 
         jLabelStatus.setText("Status:");
 
@@ -143,7 +143,7 @@ public class FormReservation extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(142, 142, 142)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

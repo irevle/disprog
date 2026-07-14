@@ -37,6 +37,7 @@ public class FormHistory extends javax.swing.JFrame {
         this.socket = socket;
         this.currentUser = username;
         this.userId = userId;
+        jButtonRefreshActionPerformed(null);
     }
     private void initTables() {
         modelReservasi = new DefaultTableModel(

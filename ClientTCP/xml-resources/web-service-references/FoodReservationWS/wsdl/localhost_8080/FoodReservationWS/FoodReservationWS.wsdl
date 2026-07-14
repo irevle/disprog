@@ -4,11 +4,59 @@
 <xsd:import namespace="http://service.foodreservation.com/" schemaLocation="http://localhost:8080/FoodReservationWS/FoodReservationWS?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="checkLogin">
-<part name="parameters" element="tns:checkLogin"/>
+<message name="registerWithRole">
+<part name="parameters" element="tns:registerWithRole"/>
 </message>
-<message name="checkLoginResponse">
-<part name="parameters" element="tns:checkLoginResponse"/>
+<message name="registerWithRoleResponse">
+<part name="parameters" element="tns:registerWithRoleResponse"/>
+</message>
+<message name="updateUserFull">
+<part name="parameters" element="tns:updateUserFull"/>
+</message>
+<message name="updateUserFullResponse">
+<part name="parameters" element="tns:updateUserFullResponse"/>
+</message>
+<message name="createReservation">
+<part name="parameters" element="tns:createReservation"/>
+</message>
+<message name="createReservationResponse">
+<part name="parameters" element="tns:createReservationResponse"/>
+</message>
+<message name="cancelReservation">
+<part name="parameters" element="tns:cancelReservation"/>
+</message>
+<message name="cancelReservationResponse">
+<part name="parameters" element="tns:cancelReservationResponse"/>
+</message>
+<message name="viewAllReservations">
+<part name="parameters" element="tns:viewAllReservations"/>
+</message>
+<message name="viewAllReservationsResponse">
+<part name="parameters" element="tns:viewAllReservationsResponse"/>
+</message>
+<message name="createOrderItem">
+<part name="parameters" element="tns:createOrderItem"/>
+</message>
+<message name="createOrderItemResponse">
+<part name="parameters" element="tns:createOrderItemResponse"/>
+</message>
+<message name="viewOrderItems">
+<part name="parameters" element="tns:viewOrderItems"/>
+</message>
+<message name="viewOrderItemsResponse">
+<part name="parameters" element="tns:viewOrderItemsResponse"/>
+</message>
+<message name="viewAllOrderItems">
+<part name="parameters" element="tns:viewAllOrderItems"/>
+</message>
+<message name="viewAllOrderItemsResponse">
+<part name="parameters" element="tns:viewAllOrderItemsResponse"/>
+</message>
+<message name="getUserRole">
+<part name="parameters" element="tns:getUserRole"/>
+</message>
+<message name="getUserRoleResponse">
+<part name="parameters" element="tns:getUserRoleResponse"/>
 </message>
 <message name="viewMenuItems">
 <part name="parameters" element="tns:viewMenuItems"/>
@@ -82,47 +130,17 @@
 <message name="deleteUserResponse">
 <part name="parameters" element="tns:deleteUserResponse"/>
 </message>
-<message name="createReservation">
-<part name="parameters" element="tns:createReservation"/>
-</message>
-<message name="createReservationResponse">
-<part name="parameters" element="tns:createReservationResponse"/>
-</message>
-<message name="cancelReservation">
-<part name="parameters" element="tns:cancelReservation"/>
-</message>
-<message name="cancelReservationResponse">
-<part name="parameters" element="tns:cancelReservationResponse"/>
-</message>
-<message name="viewAllReservations">
-<part name="parameters" element="tns:viewAllReservations"/>
-</message>
-<message name="viewAllReservationsResponse">
-<part name="parameters" element="tns:viewAllReservationsResponse"/>
-</message>
-<message name="createOrderItem">
-<part name="parameters" element="tns:createOrderItem"/>
-</message>
-<message name="createOrderItemResponse">
-<part name="parameters" element="tns:createOrderItemResponse"/>
-</message>
-<message name="viewOrderItems">
-<part name="parameters" element="tns:viewOrderItems"/>
-</message>
-<message name="viewOrderItemsResponse">
-<part name="parameters" element="tns:viewOrderItemsResponse"/>
-</message>
-<message name="getUserRole">
-<part name="parameters" element="tns:getUserRole"/>
-</message>
-<message name="getUserRoleResponse">
-<part name="parameters" element="tns:getUserRoleResponse"/>
-</message>
 <message name="updateUser">
 <part name="parameters" element="tns:updateUser"/>
 </message>
 <message name="updateUserResponse">
 <part name="parameters" element="tns:updateUserResponse"/>
+</message>
+<message name="checkLogin">
+<part name="parameters" element="tns:checkLogin"/>
+</message>
+<message name="checkLoginResponse">
+<part name="parameters" element="tns:checkLoginResponse"/>
 </message>
 <message name="addTable">
 <part name="parameters" element="tns:addTable"/>
@@ -137,9 +155,41 @@
 <part name="parameters" element="tns:registerResponse"/>
 </message>
 <portType name="FoodReservationWS">
-<operation name="checkLogin">
-<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/checkLoginRequest" message="tns:checkLogin"/>
-<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/checkLoginResponse" message="tns:checkLoginResponse"/>
+<operation name="registerWithRole">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/registerWithRoleRequest" message="tns:registerWithRole"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/registerWithRoleResponse" message="tns:registerWithRoleResponse"/>
+</operation>
+<operation name="updateUserFull">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/updateUserFullRequest" message="tns:updateUserFull"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/updateUserFullResponse" message="tns:updateUserFullResponse"/>
+</operation>
+<operation name="createReservation">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/createReservationRequest" message="tns:createReservation"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/createReservationResponse" message="tns:createReservationResponse"/>
+</operation>
+<operation name="cancelReservation">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/cancelReservationRequest" message="tns:cancelReservation"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/cancelReservationResponse" message="tns:cancelReservationResponse"/>
+</operation>
+<operation name="viewAllReservations">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewAllReservationsRequest" message="tns:viewAllReservations"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewAllReservationsResponse" message="tns:viewAllReservationsResponse"/>
+</operation>
+<operation name="createOrderItem">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/createOrderItemRequest" message="tns:createOrderItem"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/createOrderItemResponse" message="tns:createOrderItemResponse"/>
+</operation>
+<operation name="viewOrderItems">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewOrderItemsRequest" message="tns:viewOrderItems"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewOrderItemsResponse" message="tns:viewOrderItemsResponse"/>
+</operation>
+<operation name="viewAllOrderItems">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewAllOrderItemsRequest" message="tns:viewAllOrderItems"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewAllOrderItemsResponse" message="tns:viewAllOrderItemsResponse"/>
+</operation>
+<operation name="getUserRole">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/getUserRoleRequest" message="tns:getUserRole"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/getUserRoleResponse" message="tns:getUserRoleResponse"/>
 </operation>
 <operation name="viewMenuItems">
 <input wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewMenuItemsRequest" message="tns:viewMenuItems"/>
@@ -189,33 +239,13 @@
 <input wsam:Action="http://service.foodreservation.com/FoodReservationWS/deleteUserRequest" message="tns:deleteUser"/>
 <output wsam:Action="http://service.foodreservation.com/FoodReservationWS/deleteUserResponse" message="tns:deleteUserResponse"/>
 </operation>
-<operation name="createReservation">
-<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/createReservationRequest" message="tns:createReservation"/>
-<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/createReservationResponse" message="tns:createReservationResponse"/>
-</operation>
-<operation name="cancelReservation">
-<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/cancelReservationRequest" message="tns:cancelReservation"/>
-<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/cancelReservationResponse" message="tns:cancelReservationResponse"/>
-</operation>
-<operation name="viewAllReservations">
-<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewAllReservationsRequest" message="tns:viewAllReservations"/>
-<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewAllReservationsResponse" message="tns:viewAllReservationsResponse"/>
-</operation>
-<operation name="createOrderItem">
-<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/createOrderItemRequest" message="tns:createOrderItem"/>
-<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/createOrderItemResponse" message="tns:createOrderItemResponse"/>
-</operation>
-<operation name="viewOrderItems">
-<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewOrderItemsRequest" message="tns:viewOrderItems"/>
-<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/viewOrderItemsResponse" message="tns:viewOrderItemsResponse"/>
-</operation>
-<operation name="getUserRole">
-<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/getUserRoleRequest" message="tns:getUserRole"/>
-<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/getUserRoleResponse" message="tns:getUserRoleResponse"/>
-</operation>
 <operation name="updateUser">
 <input wsam:Action="http://service.foodreservation.com/FoodReservationWS/updateUserRequest" message="tns:updateUser"/>
 <output wsam:Action="http://service.foodreservation.com/FoodReservationWS/updateUserResponse" message="tns:updateUserResponse"/>
+</operation>
+<operation name="checkLogin">
+<input wsam:Action="http://service.foodreservation.com/FoodReservationWS/checkLoginRequest" message="tns:checkLogin"/>
+<output wsam:Action="http://service.foodreservation.com/FoodReservationWS/checkLoginResponse" message="tns:checkLoginResponse"/>
 </operation>
 <operation name="addTable">
 <input wsam:Action="http://service.foodreservation.com/FoodReservationWS/addTableRequest" message="tns:addTable"/>
@@ -228,7 +258,79 @@
 </portType>
 <binding name="FoodReservationWSPortBinding" type="tns:FoodReservationWS">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="checkLogin">
+<operation name="registerWithRole">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="updateUserFull">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="createReservation">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="cancelReservation">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="viewAllReservations">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="createOrderItem">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="viewOrderItems">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="viewAllOrderItems">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getUserRole">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -345,61 +447,16 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="createReservation">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="cancelReservation">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="viewAllReservations">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="createOrderItem">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="viewOrderItems">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getUserRole">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="updateUser">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="checkLogin">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

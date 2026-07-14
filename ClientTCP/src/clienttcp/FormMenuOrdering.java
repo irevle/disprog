@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -10,27 +13,53 @@ import javax.swing.table.DefaultTableModel;
  * @author ASUS
  */
 public class FormMenuOrdering extends javax.swing.JFrame {
-    DefaultTableModel model;
     private String currentUser;
     private SocketClient socket;
     private int userId;
+    private FoodReservationWS_Service wsService = new FoodReservationWS_Service();
+    private FoodReservationWS wsPort = wsService.getFoodReservationWSPort();
+    private ArrayList<Integer> menuIds = new ArrayList<>();
+    private ArrayList<Double> menuPrices = new ArrayList<>();
+    private DefaultTableModel model;
     /**
      * Creates new form FormMenuOrdering
      */
     public FormMenuOrdering(SocketClient socket, String username, int userId) {
         initComponents();
-        initTable();
         this.socket = socket;
         this.currentUser = username;
         this.userId = userId;
+        model = (DefaultTableModel) jTableMenuOrdering.getModel();
+        loadAvailableMenuItems();
+        jComboBoxMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                int index = jComboBoxMenu.getSelectedIndex();
+                if (index != -1) {
+                    lblNominal.setText(String.valueOf((int) (double) menuPrices.get(index)));
+                }
+            }
+        });
     }
     
-    private void initTable() {
-        model = new DefaultTableModel(
-            new String[]{"Menu", "Jumlah", "Subtotal", "Status"}, 0
-        );
-        jTableMenuOrdering.setModel(model);
+    private void loadAvailableMenuItems() {
+        try {
+            jComboBoxMenu.removeAllItems();
+            menuIds.clear();
+            menuPrices.clear();
+            for (String data : wsPort.viewMenuItems()) {
+                String[] parts = data.split(";");
+                boolean available = Boolean.parseBoolean(parts[5]);
+                if (available) {
+                    menuIds.add(Integer.parseInt(parts[0]));
+                    menuPrices.add(Double.parseDouble(parts[3]));
+                    jComboBoxMenu.addItem(parts[1]);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat menu: " + e.getMessage());
+        }
     }
+    
    
 
     /**
@@ -44,23 +73,25 @@ public class FormMenuOrdering extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jTextFieldJumlah = new javax.swing.JTextField();
         jButtonPesan = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButtonCancel = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblNominal = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxMenu = new javax.swing.JComboBox<>();
-        jTextFieldTotal = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableMenuOrdering = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
-        jTextFieldHarga = new javax.swing.JTextField();
         jButtonAddItem = new javax.swing.JButton();
         jButtonRemoveItem = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
         jLabelStatusOrder = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        nudJumlah = new javax.swing.JSpinner();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,14 +126,11 @@ public class FormMenuOrdering extends javax.swing.JFrame {
 
         jLabel1.setText("Daftar Menu");
 
-        jLabel2.setText("Harga");
+        lblNominal.setText("0");
 
         jLabel3.setText("Jumlah ");
 
         jComboBoxMenu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nasi Goreng", "Mie Goreng", "Soto Ayam", "Rawon", "Bakso", "Gado-Gado", "Rendang", " " }));
-
-        jTextFieldTotal.setText("Total;");
-        jTextFieldTotal.setEnabled(false);
 
         jTableMenuOrdering.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,15 +140,12 @@ public class FormMenuOrdering extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Menu", "Jumlah", "Subtotal", "Status"
             }
         ));
         jScrollPane2.setViewportView(jTableMenuOrdering);
 
         jLabel5.setText("Total");
-
-        jTextFieldHarga.setText("harga ");
-        jTextFieldHarga.setEnabled(false);
 
         jButtonAddItem.setText("Add item");
         jButtonAddItem.addActionListener(new java.awt.event.ActionListener() {
@@ -138,18 +163,20 @@ public class FormMenuOrdering extends javax.swing.JFrame {
 
         jLabel22.setText("Status");
 
-        jLabelStatusOrder.setText(" status order");
+        jLabelStatusOrder.setText("-");
+
+        jLabel6.setText("Rp.");
+
+        jLabel7.setText("Harga");
+
+        lblTotal.setText("0");
+
+        jLabel8.setText("Rp.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonPesan)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonCancel)
-                .addGap(138, 138, 138))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -166,32 +193,48 @@ public class FormMenuOrdering extends javax.swing.JFrame {
                                     .addComponent(jButtonRemoveItem))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addComponent(jLabel3))
-                                    .addGap(56, 56, 56)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jTextFieldJumlah, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jComboBoxMenu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTextFieldHarga, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel1)
+                                                .addComponent(jLabel3))
+                                            .addGap(56, 56, 56))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(70, 70, 70)
+                                            .addComponent(jLabel6)
+                                            .addGap(3, 3, 3)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jComboBoxMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addGap(15, 15, 15)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(lblNominal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(nudJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(80, 80, 80))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(46, 46, 46)
-                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(51, 51, 51)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                                        .addComponent(jLabel8)
+                                        .addGap(18, 18, 18)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabelStatusOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(52, Short.MAX_VALUE))
+                                    .addComponent(jLabelStatusOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(47, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonPesan)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonCancel)
+                .addGap(138, 138, 138))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,19 +243,18 @@ public class FormMenuOrdering extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBoxMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldHarga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBoxMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNominal)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(nudJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRemoveItem)
                     .addComponent(jButtonAddItem))
@@ -221,8 +263,9 @@ public class FormMenuOrdering extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextFieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                    .addComponent(lblTotal)
+                    .addComponent(jLabel8))
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
                     .addComponent(jLabelStatusOrder))
@@ -238,35 +281,16 @@ public class FormMenuOrdering extends javax.swing.JFrame {
 
     private void jButtonAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddItemActionPerformed
         try {
+            int index = jComboBoxMenu.getSelectedIndex();
+            if (index == -1) return;
+
             String menu = (String) jComboBoxMenu.getSelectedItem();
-            int harga = 0;
-            int menuItemId = 0;
+            double harga = menuPrices.get(index);
+            int jumlah = (int) nudJumlah.getValue();
+            double subtotal = harga * jumlah;
 
-            // tentukan harga dan id berdasarkan menu
-            if(menu.equals("Nasi Goreng")) {
-                harga = 15000; menuItemId = 1;
-            } else if(menu.equals("Mie Goreng")) {
-                harga = 12000; menuItemId = 2;
-            } else if(menu.equals("Soto Ayam")) {
-                harga = 18000; menuItemId = 3;
-            } else if(menu.equals("Rawon")) {
-                harga = 20000; menuItemId = 4;
-            } else if(menu.equals("Bakso")) {
-                harga = 15000; menuItemId = 5;
-            } else if(menu.equals("Gado-Gado")) {
-                harga = 10000; menuItemId = 6;
-            } else if(menu.equals("Rendang")) {
-                harga = 25000; menuItemId = 7;
-            }
-
-            int jumlah = Integer.parseInt(jTextFieldJumlah.getText());
-            int subtotal = harga * jumlah;
-
-            // tampilkan harga di textfield
-            jTextFieldHarga.setText(String.valueOf(harga));
-
-            // tambahkan ke tabel
-            model.addRow(new Object[]{menu, jumlah, subtotal, "Pending"});
+            lblNominal.setText(String.valueOf((int) harga));
+            model.addRow(new Object[]{menu, jumlah, (int) subtotal, "Pending"});
             updateTotal();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Input jumlah tidak valid!");
@@ -283,13 +307,12 @@ public class FormMenuOrdering extends javax.swing.JFrame {
                 int subtotal = (int) model.getValueAt(i, 2);
 
                 int menuItemId = 0;
-                if(menu.equals("Nasi Goreng")) menuItemId = 1;
-                else if(menu.equals("Mie Goreng")) menuItemId = 2;
-                else if(menu.equals("Soto Ayam")) menuItemId = 3;
-                else if(menu.equals("Rawon")) menuItemId = 4;
-                else if(menu.equals("Bakso")) menuItemId = 5;
-                else if(menu.equals("Gado-Gado")) menuItemId = 6;
-                else if(menu.equals("Rendang")) menuItemId = 7;
+                for (int j = 0; j < jComboBoxMenu.getItemCount(); j++) {
+                    if (jComboBoxMenu.getItemAt(j).equals(menu)) {
+                        menuItemId = menuIds.get(j);
+                        break;
+                    }
+                }
 
                 boolean success = socket.addOrderItem(reservationId, menuItemId, jumlah, subtotal);
                 if (!success) {
@@ -324,7 +347,7 @@ public class FormMenuOrdering extends javax.swing.JFrame {
         for (int i = 0; i < model.getRowCount(); i++) {
             total += (int) model.getValueAt(i, 2);
         }
-        jTextFieldTotal.setText(String.valueOf(total));
+        lblTotal.setText(String.valueOf(total));
     }
     /**
      * @param args the command line arguments
@@ -373,18 +396,20 @@ public class FormMenuOrdering extends javax.swing.JFrame {
     private javax.swing.JButton jButtonRemoveItem;
     private javax.swing.JComboBox<String> jComboBoxMenu;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabelStatusOrder;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableMenuOrdering;
-    private javax.swing.JTextField jTextFieldHarga;
-    private javax.swing.JTextField jTextFieldJumlah;
-    private javax.swing.JTextField jTextFieldTotal;
+    private javax.swing.JLabel lblNominal;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JSpinner nudJumlah;
     // End of variables declaration//GEN-END:variables
 }

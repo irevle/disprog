@@ -111,6 +111,12 @@ public class SocketClient {
         return sendCommand("UPDATE_ORDER_STATUS|" + orderItemId + "|" + status).startsWith("OK");
     }
 
+    public boolean updateReservation(int id, String tanggal, String jam,
+                                      String meja, int tamu, String status) throws IOException {
+        return sendCommand("UPDATE_RESERVATION|" + id + "|"
+            + tanggal + "|" + jam + "|" + meja + "|" + tamu + "|" + status).startsWith("OK");
+    }
+
     public String[] getTables() throws IOException {
         String res = sendCommand("GET_TABLES");
         if (res.startsWith("OK|"))

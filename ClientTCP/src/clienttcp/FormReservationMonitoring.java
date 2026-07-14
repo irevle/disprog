@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
@@ -14,6 +15,7 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
     private String currentUser;
     private SocketClient socket;
     private int userId;
+    private ArrayList<Integer> reservationIds = new ArrayList<>();
     /**
      * Creates new form FormReservationMonitoring
      */
@@ -23,15 +25,37 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
         this.currentUser = username;
         this.userId = userId;
         loadAllReservations();
+
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTable1.getSelectedRow();
+                if (row != -1) {
+                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    jTextFieldUsername2.setText(model.getValueAt(row, 0).toString());
+                    jTextFieldUsername.setText(model.getValueAt(row, 1).toString());
+                    jTextFieldEmail.setText(model.getValueAt(row, 2).toString());
+                    jTextFieldPassword.setText(model.getValueAt(row, 3).toString());
+                    String status = model.getValueAt(row, 4).toString();
+                    for (int i = 0; i < jComboBox1.getItemCount(); i++) {
+                        if (jComboBox1.getItemAt(i).equals(status)) {
+                            jComboBox1.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void loadAllReservations() {
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
+            reservationIds.clear();
             String[] data = socket.getAllReservations();
             for (String row : data) {
                 String[] parts = row.split(";");
+                reservationIds.add(Integer.parseInt(parts[0]));
                 model.addRow(new Object[]{parts[3], parts[4], parts[2], parts[6], parts[7]});
             }
         } catch (Exception e) {
@@ -92,12 +116,23 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
                 "Tanggal", "Jam", "Meja", "Jumlah Tamu", "Status"
             }
-        ) );
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setText("No Meja");
@@ -138,7 +173,7 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
 
         jLabel7.setText("Tanggal");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Terisi", "Tidak terisi" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDING", "CANCELLED", "CONFIRMED", "COMPLETED" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -311,8 +346,15 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
         }
 
         try {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int id = reservationIds.get(selectedRow);
+            String tanggal = jTextFieldUsername2.getText();
+            String jam = jTextFieldUsername.getText();
+            String meja = jTextFieldEmail.getText();
+            int tamu = Integer.parseInt(jTextFieldPassword.getText());
+            String status = (String) jComboBox1.getSelectedItem();
 
+            socket.updateReservation(id, tanggal, jam, meja, tamu, status);
+            loadAllReservations();
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());

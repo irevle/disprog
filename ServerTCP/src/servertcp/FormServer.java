@@ -174,6 +174,23 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     break;
                 }
 
+                case "UPDATE_RESERVATION": {
+                    int id = Integer.parseInt(parts[1]);
+                    String tanggal = parts[2];
+                    String jam = parts[3];
+                    String meja = parts[4];
+                    int tamu = Integer.parseInt(parts[5]);
+                    String status = parts[6];
+                    boolean ok = reservationModel.updateReservation(id, tanggal, jam, meja, tamu, status);
+                    if (ok) {
+                        client.sendMsg("OK|Reservation updated");
+                        broadCast("RESERVATION_UPDATE|" + id + "|" + status, client);
+                    } else {
+                        client.sendMsg("ERR|Could not update reservation");
+                    }
+                    break;
+                }
+
                 case "GET_HISTORY": {
                     int userId = Integer.parseInt(parts[1]);
                     ArrayList<String> rows = reservationModel.viewReservationsByUser(userId);

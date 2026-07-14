@@ -6,7 +6,6 @@ package clienttcp;
 import com.foodreservation.service.FoodReservationWS;
 import com.foodreservation.service.FoodReservationWS_Service;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
@@ -19,7 +18,7 @@ public class FormTableManagement extends javax.swing.JFrame {
     private SocketClient socket;
     private FoodReservationWS_Service wsService = new FoodReservationWS_Service();
     private FoodReservationWS wsPort = wsService.getFoodReservationWSPort();
-    private List<Integer> tableIds = new ArrayList<>();
+    private ArrayList<Integer> tableIds = new ArrayList<>();
     /**
      * Creates new form FormTableManagement
      */
@@ -28,6 +27,24 @@ public class FormTableManagement extends javax.swing.JFrame {
         this.socket = socket;
         this.currentUser = username;
         loadAllTables();
+
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTable1.getSelectedRow();
+                if (row != -1) {
+                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    jTextFieldNomorMeja.setText(model.getValueAt(row, 0).toString());
+                    nudKapasitasMeja.setValue(Integer.parseInt(model.getValueAt(row, 1).toString()));
+                    String status = model.getValueAt(row, 2).toString();
+                    for (int i = 0; i < jComboBox1.getItemCount(); i++) {
+                        if (jComboBox1.getItemAt(i).equals(status)) {
+                            jComboBox1.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void loadAllTables() {
@@ -65,11 +82,11 @@ public class FormTableManagement extends javax.swing.JFrame {
         jTextFieldNomorMeja = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButtonBack = new javax.swing.JButton();
-        jTextFieldKapasitasMeja = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButtonSimpanPerubahan = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        nudKapasitasMeja = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,12 +108,23 @@ public class FormTableManagement extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
                 "Nomor Meja", "Kapasitas Meja", "Status Meja"
             }
-        ) );
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setText("Kapasitas Meja");
@@ -119,7 +147,7 @@ public class FormTableManagement extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Terisi ", "Tidak terisi", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AVAILABLE", "UNAVAILABLE" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -138,24 +166,26 @@ public class FormTableManagement extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(104, 104, 104)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldKapasitasMeja, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldNomorMeja, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonTambahMeja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonHapusMeja, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonSimpanPerubahan)))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(nudKapasitasMeja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(41, 41, 41))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTextFieldNomorMeja, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonSimpanPerubahan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonHapusMeja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonTambahMeja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,18 +205,18 @@ public class FormTableManagement extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextFieldNomorMeja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldNomorMeja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonTambahMeja))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextFieldKapasitasMeja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nudKapasitasMeja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonTambahMeja)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(40, 40, 40)
                         .addComponent(jButtonHapusMeja)
                         .addGap(12, 12, 12)
                         .addComponent(jButtonSimpanPerubahan)))
@@ -205,12 +235,15 @@ public class FormTableManagement extends javax.swing.JFrame {
             return;
         }
 
-        try {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int id = tableIds.get(selectedRow);
+        int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus meja ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
 
+        try {
+            int id = tableIds.get(selectedRow);
             wsPort.deleteTable(id);
             loadAllTables();
+            jTextFieldNomorMeja.setText("");
+            nudKapasitasMeja.setValue(0);
             JOptionPane.showMessageDialog(this, "Meja berhasil dihapus!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal hapus meja: " + e.getMessage());
@@ -220,11 +253,13 @@ public class FormTableManagement extends javax.swing.JFrame {
     private void jButtonTambahMejaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahMejaActionPerformed
         try {
             String nomorMeja = jTextFieldNomorMeja.getText();
-            int kapasitas = Integer.parseInt(jTextFieldKapasitasMeja.getText());
+            int kapasitas = (int) nudKapasitasMeja.getValue();
             String status = (String) jComboBox1.getSelectedItem();
 
             wsPort.addTable(nomorMeja, kapasitas, status);
             loadAllTables();
+            jTextFieldNomorMeja.setText("");
+            nudKapasitasMeja.setValue(0);
             JOptionPane.showMessageDialog(this, "Meja berhasil ditambahkan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal tambah meja: " + e.getMessage());
@@ -245,11 +280,10 @@ public class FormTableManagement extends javax.swing.JFrame {
         }
 
         try {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             int id = tableIds.get(selectedRow);
-            String nomorMeja = (String) model.getValueAt(selectedRow, 0);
-            int kapasitas = Integer.parseInt(model.getValueAt(selectedRow, 1).toString());
-            String status = (String) model.getValueAt(selectedRow, 2);
+            String nomorMeja = jTextFieldNomorMeja.getText();
+            int kapasitas = (int) nudKapasitasMeja.getValue();
+            String status = (String) jComboBox1.getSelectedItem();
 
             wsPort.updateTable(id, nomorMeja, kapasitas, status);
             loadAllTables();
@@ -314,7 +348,7 @@ public class FormTableManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldKapasitasMeja;
     private javax.swing.JTextField jTextFieldNomorMeja;
+    private javax.swing.JSpinner nudKapasitasMeja;
     // End of variables declaration//GEN-END:variables
 }

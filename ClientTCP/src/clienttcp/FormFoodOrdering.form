@@ -65,14 +65,14 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jLabel9" min="-2" pref="88" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jTextFieldSatus" min="-2" pref="109" max="-2" attributes="0"/>
+                                      <Component id="cmbStatus" min="-2" pref="109" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButtonTambahItem" alignment="1" min="-2" pref="132" max="-2" attributes="0"/>
                                   <Component id="jButtonHapusItem" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
                                   <Component id="jButtonSimpanPerubahan" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButtonTambahItem" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           </Group>
@@ -116,6 +116,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextFieldQuantity" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonTambahItem" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -125,12 +126,11 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldSatus" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jButtonTambahItem" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Component id="jButtonHapusItem" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="jButtonSimpanPerubahan" min="-2" max="-2" attributes="0"/>
@@ -228,8 +228,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSimpanPerubahanActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldSatus">
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
         <Property name="text" type="java.lang.String" value="Quantity"/>
@@ -243,11 +241,28 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldSubtotal">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Satus Pesanan"/>
+        <Property name="text" type="java.lang.String" value="Status"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbStatus">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="PENDING"/>
+            <StringItem index="1" value="READY"/>
+            <StringItem index="2" value="SERVED"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

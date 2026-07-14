@@ -85,6 +85,38 @@ public class Reservation extends MyModel {
         return -1;
     }
 
+    public boolean updateReservation(int id, String tanggal, String jam,
+                                      String tableNumber, int tamu, String status) {
+        try {
+            if (!MyModel.conn.isClosed()) {
+                PreparedStatement findTable = (PreparedStatement) MyModel.conn.prepareStatement(
+                    "SELECT id FROM tables WHERE table_number = ?"
+                );
+                findTable.setString(1, tableNumber);
+                this.result = findTable.executeQuery();
+                int tableId = this.result.next() ? this.result.getInt("id") : -1;
+                findTable.close();
+
+                PreparedStatement sql = (PreparedStatement) MyModel.conn.prepareStatement(
+                    "UPDATE reservations SET reservation_date = ?, reservation_time = ?, "
+                  + "table_id = ?, guest_count = ?, status = ? WHERE id = ?"
+                );
+                sql.setString(1, tanggal);
+                sql.setString(2, jam);
+                sql.setInt(3, tableId);
+                sql.setInt(4, tamu);
+                sql.setString(5, status);
+                sql.setInt(6, id);
+                boolean ok = sql.executeUpdate() > 0;
+                sql.close();
+                return ok;
+            }
+        } catch (Exception e) {
+            System.out.println("Error updateReservation " + e);
+        }
+        return false;
+    }
+
     public boolean cancelReservation(int reservationId) {
         boolean success = false;
         try {

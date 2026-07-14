@@ -44,6 +44,10 @@
 
 <xs:element name="registerResponse" type="tns:registerResponse"/>
 
+<xs:element name="registerWithRole" type="tns:registerWithRole"/>
+
+<xs:element name="registerWithRoleResponse" type="tns:registerWithRoleResponse"/>
+
 <xs:element name="searchMenu" type="tns:searchMenu"/>
 
 <xs:element name="searchMenuResponse" type="tns:searchMenuResponse"/>
@@ -62,7 +66,15 @@
 
 <xs:element name="updateUser" type="tns:updateUser"/>
 
+<xs:element name="updateUserFull" type="tns:updateUserFull"/>
+
+<xs:element name="updateUserFullResponse" type="tns:updateUserFullResponse"/>
+
 <xs:element name="updateUserResponse" type="tns:updateUserResponse"/>
+
+<xs:element name="viewAllOrderItems" type="tns:viewAllOrderItems"/>
+
+<xs:element name="viewAllOrderItemsResponse" type="tns:viewAllOrderItemsResponse"/>
 
 <xs:element name="viewAllReservations" type="tns:viewAllReservations"/>
 
@@ -88,19 +100,6 @@
 
 <xs:element name="viewUsersResponse" type="tns:viewUsersResponse"/>
 
-<xs:complexType name="checkLogin">
-<xs:sequence>
-<xs:element name="username" type="xs:string" minOccurs="0"/>
-<xs:element name="password" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="checkLoginResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="viewReservations">
 <xs:sequence>
 <xs:element name="userId" type="xs:int"/>
@@ -123,16 +122,6 @@
 <xs:complexType name="updateOrderStatusResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="viewTables">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="viewTablesResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -181,35 +170,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="searchMenu">
-<xs:sequence>
-<xs:element name="keyword" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="searchMenuResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="createReservation">
-<xs:sequence>
-<xs:element name="userId" type="xs:int"/>
-<xs:element name="date" type="xs:string" minOccurs="0"/>
-<xs:element name="time" type="xs:string" minOccurs="0"/>
-<xs:element name="endTime" type="xs:string" minOccurs="0"/>
-<xs:element name="guests" type="xs:int"/>
-<xs:element name="notes" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="createReservationResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:int"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="viewMenuItems">
 <xs:sequence/>
 </xs:complexType>
@@ -249,18 +209,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="deleteTable">
-<xs:sequence>
-<xs:element name="arg0" type="xs:int"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="deleteTableResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="deleteMenuItem">
 <xs:sequence>
 <xs:element name="id" type="xs:int"/>
@@ -284,30 +232,6 @@
 </xs:complexType>
 
 <xs:complexType name="registerResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="viewAllReservations">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="viewAllReservationsResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="addTable">
-<xs:sequence>
-<xs:element name="arg0" type="xs:string" minOccurs="0"/>
-<xs:element name="arg1" type="xs:int"/>
-<xs:element name="arg2" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="addTableResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
@@ -341,6 +265,121 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="registerWithRole">
+<xs:sequence>
+<xs:element name="username" type="xs:string" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+<xs:element name="fullName" type="xs:string" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+<xs:element name="phone" type="xs:string" minOccurs="0"/>
+<xs:element name="role" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registerWithRoleResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkLogin">
+<xs:sequence>
+<xs:element name="username" type="xs:string" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkLoginResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="viewTables">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="viewTablesResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createReservation">
+<xs:sequence>
+<xs:element name="userId" type="xs:int"/>
+<xs:element name="date" type="xs:string" minOccurs="0"/>
+<xs:element name="time" type="xs:string" minOccurs="0"/>
+<xs:element name="endTime" type="xs:string" minOccurs="0"/>
+<xs:element name="guests" type="xs:int"/>
+<xs:element name="notes" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createReservationResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchMenu">
+<xs:sequence>
+<xs:element name="keyword" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchMenuResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="viewAllOrderItems">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="viewAllOrderItemsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTable">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="viewAllReservations">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="viewAllReservationsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addTable">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:int"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="viewOrderItems">
 <xs:sequence>
 <xs:element name="reservationId" type="xs:int"/>
@@ -350,6 +389,23 @@
 <xs:complexType name="viewOrderItemsResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateUserFull">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="fullName" type="xs:string" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+<xs:element name="phone" type="xs:string" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+<xs:element name="role" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateUserFullResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 

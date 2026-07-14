@@ -46,6 +46,8 @@ public class ObjectFactory {
     private final static QName _GetUserRoleResponse_QNAME = new QName("http://service.foodreservation.com/", "getUserRoleResponse");
     private final static QName _Register_QNAME = new QName("http://service.foodreservation.com/", "register");
     private final static QName _RegisterResponse_QNAME = new QName("http://service.foodreservation.com/", "registerResponse");
+    private final static QName _RegisterWithRole_QNAME = new QName("http://service.foodreservation.com/", "registerWithRole");
+    private final static QName _RegisterWithRoleResponse_QNAME = new QName("http://service.foodreservation.com/", "registerWithRoleResponse");
     private final static QName _SearchMenu_QNAME = new QName("http://service.foodreservation.com/", "searchMenu");
     private final static QName _SearchMenuResponse_QNAME = new QName("http://service.foodreservation.com/", "searchMenuResponse");
     private final static QName _UpdateMenuItem_QNAME = new QName("http://service.foodreservation.com/", "updateMenuItem");
@@ -55,7 +57,11 @@ public class ObjectFactory {
     private final static QName _UpdateTable_QNAME = new QName("http://service.foodreservation.com/", "updateTable");
     private final static QName _UpdateTableResponse_QNAME = new QName("http://service.foodreservation.com/", "updateTableResponse");
     private final static QName _UpdateUser_QNAME = new QName("http://service.foodreservation.com/", "updateUser");
+    private final static QName _UpdateUserFull_QNAME = new QName("http://service.foodreservation.com/", "updateUserFull");
+    private final static QName _UpdateUserFullResponse_QNAME = new QName("http://service.foodreservation.com/", "updateUserFullResponse");
     private final static QName _UpdateUserResponse_QNAME = new QName("http://service.foodreservation.com/", "updateUserResponse");
+    private final static QName _ViewAllOrderItems_QNAME = new QName("http://service.foodreservation.com/", "viewAllOrderItems");
+    private final static QName _ViewAllOrderItemsResponse_QNAME = new QName("http://service.foodreservation.com/", "viewAllOrderItemsResponse");
     private final static QName _ViewAllReservations_QNAME = new QName("http://service.foodreservation.com/", "viewAllReservations");
     private final static QName _ViewAllReservationsResponse_QNAME = new QName("http://service.foodreservation.com/", "viewAllReservationsResponse");
     private final static QName _ViewMenuItems_QNAME = new QName("http://service.foodreservation.com/", "viewMenuItems");
@@ -253,6 +259,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link RegisterWithRole }
+     * 
+     */
+    public RegisterWithRole createRegisterWithRole() {
+        return new RegisterWithRole();
+    }
+
+    /**
+     * Create an instance of {@link RegisterWithRoleResponse }
+     * 
+     */
+    public RegisterWithRoleResponse createRegisterWithRoleResponse() {
+        return new RegisterWithRoleResponse();
+    }
+
+    /**
      * Create an instance of {@link SearchMenu }
      * 
      */
@@ -325,11 +347,43 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UpdateUserFull }
+     * 
+     */
+    public UpdateUserFull createUpdateUserFull() {
+        return new UpdateUserFull();
+    }
+
+    /**
+     * Create an instance of {@link UpdateUserFullResponse }
+     * 
+     */
+    public UpdateUserFullResponse createUpdateUserFullResponse() {
+        return new UpdateUserFullResponse();
+    }
+
+    /**
      * Create an instance of {@link UpdateUserResponse }
      * 
      */
     public UpdateUserResponse createUpdateUserResponse() {
         return new UpdateUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link ViewAllOrderItems }
+     * 
+     */
+    public ViewAllOrderItems createViewAllOrderItems() {
+        return new ViewAllOrderItems();
+    }
+
+    /**
+     * Create an instance of {@link ViewAllOrderItemsResponse }
+     * 
+     */
+    public ViewAllOrderItemsResponse createViewAllOrderItemsResponse() {
+        return new ViewAllOrderItemsResponse();
     }
 
     /**
@@ -715,6 +769,32 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RegisterWithRole }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link RegisterWithRole }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.foodreservation.com/", name = "registerWithRole")
+    public JAXBElement<RegisterWithRole> createRegisterWithRole(RegisterWithRole value) {
+        return new JAXBElement<RegisterWithRole>(_RegisterWithRole_QNAME, RegisterWithRole.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RegisterWithRoleResponse }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link RegisterWithRoleResponse }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.foodreservation.com/", name = "registerWithRoleResponse")
+    public JAXBElement<RegisterWithRoleResponse> createRegisterWithRoleResponse(RegisterWithRoleResponse value) {
+        return new JAXBElement<RegisterWithRoleResponse>(_RegisterWithRoleResponse_QNAME, RegisterWithRoleResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SearchMenu }{@code >}
      * 
      * @param value
@@ -832,6 +912,32 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateUserFull }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link UpdateUserFull }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.foodreservation.com/", name = "updateUserFull")
+    public JAXBElement<UpdateUserFull> createUpdateUserFull(UpdateUserFull value) {
+        return new JAXBElement<UpdateUserFull>(_UpdateUserFull_QNAME, UpdateUserFull.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateUserFullResponse }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link UpdateUserFullResponse }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.foodreservation.com/", name = "updateUserFullResponse")
+    public JAXBElement<UpdateUserFullResponse> createUpdateUserFullResponse(UpdateUserFullResponse value) {
+        return new JAXBElement<UpdateUserFullResponse>(_UpdateUserFullResponse_QNAME, UpdateUserFullResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UpdateUserResponse }{@code >}
      * 
      * @param value
@@ -842,6 +948,32 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service.foodreservation.com/", name = "updateUserResponse")
     public JAXBElement<UpdateUserResponse> createUpdateUserResponse(UpdateUserResponse value) {
         return new JAXBElement<UpdateUserResponse>(_UpdateUserResponse_QNAME, UpdateUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ViewAllOrderItems }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ViewAllOrderItems }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.foodreservation.com/", name = "viewAllOrderItems")
+    public JAXBElement<ViewAllOrderItems> createViewAllOrderItems(ViewAllOrderItems value) {
+        return new JAXBElement<ViewAllOrderItems>(_ViewAllOrderItems_QNAME, ViewAllOrderItems.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ViewAllOrderItemsResponse }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ViewAllOrderItemsResponse }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.foodreservation.com/", name = "viewAllOrderItemsResponse")
+    public JAXBElement<ViewAllOrderItemsResponse> createViewAllOrderItemsResponse(ViewAllOrderItemsResponse value) {
+        return new JAXBElement<ViewAllOrderItemsResponse>(_ViewAllOrderItemsResponse_QNAME, ViewAllOrderItemsResponse.class, null, value);
     }
 
     /**

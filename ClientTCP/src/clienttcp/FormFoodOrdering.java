@@ -5,8 +5,7 @@
 package clienttcp;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
 import java.util.*;
 
 /**
@@ -26,18 +25,22 @@ public class FormFoodOrdering extends javax.swing.JFrame {
         this.currentUser = username;
         loadMenuItems();
 
-        jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int row = jTable1.getSelectedRow();
-                    if (row != -1) {
-                        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                        jTextFieldNamaMenu.setText(model.getValueAt(row, 0).toString());
-                        jTextFieldKategori.setText(model.getValueAt(row, 1).toString());
-                        jTextFieldHarga.setText(model.getValueAt(row, 2).toString());
-                        jTextFieldQuantity.setText(model.getValueAt(row, 3).toString());
-                        jTextFieldSubtotal.setText(model.getValueAt(row, 4).toString());
-                        jTextFieldSatus.setText(model.getValueAt(row, 5).toString());
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTable1.getSelectedRow();
+                if (row != -1) {
+                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    jTextFieldNamaMenu.setText(model.getValueAt(row, 0).toString());
+                    jTextFieldKategori.setText(model.getValueAt(row, 1).toString());
+                    jTextFieldHarga.setText(model.getValueAt(row, 2).toString());
+                    jTextFieldQuantity.setText(model.getValueAt(row, 3).toString());
+                    jTextFieldSubtotal.setText(model.getValueAt(row, 4).toString());
+                    String status = model.getValueAt(row, 5).toString();
+                    for (int i = 0; i < cmbStatus.getItemCount(); i++) {
+                        if (cmbStatus.getItemAt(i).equals(status)) {
+                            cmbStatus.setSelectedIndex(i);
+                            break;
+                        }
                     }
                 }
             }
@@ -88,12 +91,12 @@ public class FormFoodOrdering extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextFieldHarga = new javax.swing.JTextField();
         jButtonSimpanPerubahan = new javax.swing.JButton();
-        jTextFieldSatus = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldQuantity = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jTextFieldSubtotal = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        cmbStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,7 +161,11 @@ public class FormFoodOrdering extends javax.swing.JFrame {
 
         jLabel7.setText("Subtotal");
 
-        jLabel9.setText("Satus Pesanan");
+        jTextFieldSubtotal.setEnabled(false);
+
+        jLabel9.setText("Status");
+
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDING", "READY", "SERVED" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -199,12 +206,12 @@ public class FormFoodOrdering extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextFieldSatus, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonTambahItem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButtonHapusItem, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonSimpanPerubahan))
+                                    .addComponent(jButtonSimpanPerubahan)
+                                    .addComponent(jButtonTambahItem, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(12, 12, 12))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(283, 283, 283)
@@ -235,7 +242,8 @@ public class FormFoodOrdering extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jTextFieldQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonTambahItem))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
@@ -243,10 +251,9 @@ public class FormFoodOrdering extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextFieldSatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonTambahItem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(40, 40, 40)
                         .addComponent(jButtonHapusItem)
                         .addGap(12, 12, 12)
                         .addComponent(jButtonSimpanPerubahan)))
@@ -281,7 +288,7 @@ public class FormFoodOrdering extends javax.swing.JFrame {
             double harga = Double.parseDouble(jTextFieldHarga.getText());
             int qty = Integer.parseInt(jTextFieldQuantity.getText());
             double subtotal = harga * qty;
-            String status = jTextFieldSatus.getText();
+            String status = (String) cmbStatus.getSelectedItem();
 
             jTextFieldSubtotal.setText(String.valueOf(subtotal));
 
@@ -314,7 +321,7 @@ public class FormFoodOrdering extends javax.swing.JFrame {
             double harga = Double.parseDouble(jTextFieldHarga.getText());
             int qty = Integer.parseInt(jTextFieldQuantity.getText());
             double subtotal = Double.parseDouble(jTextFieldSubtotal.getText());
-            String status = jTextFieldSatus.getText();
+            String status = (String) cmbStatus.getSelectedItem();
 
             socket.updateOrderStatus(id, status);
 
@@ -365,6 +372,7 @@ public class FormFoodOrdering extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbStatus;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonHapusItem;
     private javax.swing.JButton jButtonSimpanPerubahan;
@@ -382,7 +390,6 @@ public class FormFoodOrdering extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldKategori;
     private javax.swing.JTextField jTextFieldNamaMenu;
     private javax.swing.JTextField jTextFieldQuantity;
-    private javax.swing.JTextField jTextFieldSatus;
     private javax.swing.JTextField jTextFieldSubtotal;
     // End of variables declaration//GEN-END:variables
 }

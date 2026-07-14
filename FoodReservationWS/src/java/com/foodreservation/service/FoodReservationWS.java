@@ -263,6 +263,33 @@ public class FoodReservationWS {
         }
     }
 
+    @WebMethod(operationName = "updateUserFull")
+    public boolean updateUserFull(@WebParam(name = "id") int id,
+                                   @WebParam(name = "fullName") String fullName,
+                                   @WebParam(name = "email") String email,
+                                   @WebParam(name = "phone") String phone,
+                                   @WebParam(name = "password") String password,
+                                   @WebParam(name = "role") String role) {
+        try {
+            User u = new User();
+            u.setId(id);
+            return u.updateUserFull(fullName, email, phone, password, role);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @WebMethod(operationName = "registerWithRole")
+    public boolean registerWithRole(@WebParam(name = "username") String username,
+                                     @WebParam(name = "password") String password,
+                                     @WebParam(name = "fullName") String fullName,
+                                     @WebParam(name = "email") String email,
+                                     @WebParam(name = "phone") String phone,
+                                     @WebParam(name = "role") String role) {
+        return userModel.register(username, password, fullName, email, phone, role);
+    }
+
     @WebMethod(operationName = "deleteUser")
     public boolean deleteUser(@WebParam(name = "id") int id) {
         try {
