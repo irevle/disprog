@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
-import com.foodreservation.model.MenuItem;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,12 +12,16 @@ import javax.swing.JOptionPane;
  * @author ASUS
  */
 public class FormMenuManagement extends javax.swing.JFrame {
-private String currentUser;
+    private String currentUser;
+    private SocketClient socket;
+    private FoodReservationWS_Service wsService = new FoodReservationWS_Service();
+    private FoodReservationWS wsPort = wsService.getFoodReservationWSPort();
     /**
      * Creates new form FormMenuManagement
      */
-    public FormMenuManagement(String username) {
+    public FormMenuManagement(SocketClient socket, String username) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
     }
 
@@ -234,16 +239,13 @@ private String currentUser;
             javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable2.getModel();
             String nama = (String) model.getValueAt(selectedRow, 0);
 
-            // cari id menu berdasarkan nama
-            MenuItem m = new MenuItem();
-            for (String data : m.viewListDataString()) {
+            for (String data : wsPort.viewMenuItems()) {
                 String[] parts = data.split(";");
                 if (parts[1].equals(nama)) {
-                    m.id = Integer.parseInt(parts[0]);
+                    wsPort.deleteMenuItem(Integer.parseInt(parts[0]));
                     break;
                 }
             }
-            m.deleteData();
 
             model.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Menu berhasil dihapus!");
@@ -260,15 +262,8 @@ private String currentUser;
             String keterangan = jTextFieldKeterangan.getText();
             String status = jTextFieldStatus.getText();
 
-            MenuItem m = new MenuItem();
-            // set field sesuai input
-            m.name = nama;
-            m.category = kategori;
-            m.price = harga;
-            m.description = keterangan;
-            m.available = status.equalsIgnoreCase("available");
-
-            m.insertData();
+            boolean available = status.equalsIgnoreCase("available");
+            wsPort.addMenuItem(nama, kategori, harga, keterangan, available);
 
             javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable2.getModel();
             model.addRow(new Object[]{nama, kategori, harga, keterangan, status});
@@ -280,11 +275,8 @@ private String currentUser;
     }//GEN-LAST:event_jButtonTambahMenuActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // Tutup form History
         this.dispose();
-
-        // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard(currentUser);
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, 0);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -304,21 +296,14 @@ private String currentUser;
             String keterangan = (String) model.getValueAt(selectedRow, 3);
             String status = (String) model.getValueAt(selectedRow, 4);
 
-            MenuItem m = new MenuItem();
-            for (String data : m.viewListDataString()) {
+            for (String data : wsPort.viewMenuItems()) {
                 String[] parts = data.split(";");
                 if (parts[1].equals(nama)) {
-                    m.id = Integer.parseInt(parts[0]);
+                    boolean available = status.equalsIgnoreCase("available");
+                    wsPort.updateMenuItem(Integer.parseInt(parts[0]), nama, kategori, harga, keterangan, available);
                     break;
                 }
             }
-            m.name = nama;
-            m.category = kategori;
-            m.price = harga;
-            m.description = keterangan;
-            m.available = status.equalsIgnoreCase("available");
-
-            m.updateData();
 
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
@@ -356,7 +341,11 @@ private String currentUser;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMenuManagement("guest").setVisible(true);
+                try {
+                    new FormMenuManagement(new SocketClient(), "guest").setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

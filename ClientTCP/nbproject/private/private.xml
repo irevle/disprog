@@ -3,16 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormReservation.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormMenuOrdering.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormLogin.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormHistory.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormFoodOrdering.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormRegister.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormMenuManagement.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormDashboard.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormReservationMonitoring.java</file>
-            <file>file:/C:/Dokumen/Tugas%20S4/Distributed%20Programing/UAS/projekgit/disprog/ClientTCP/src/clienttcp/FormAdminPanel.java</file>
+            <file>file:/home/elve/Documents/NetBeansProjects/disprog/ClientTCP/src/clienttcp/FormHistory.java</file>
+            <file>file:/home/elve/Documents/NetBeansProjects/disprog/ClientTCP/src/clienttcp/FormFoodOrdering.java</file>
         </group>
     </open-files>
 </project-private>

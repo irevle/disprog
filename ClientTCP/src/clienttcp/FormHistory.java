@@ -19,17 +19,20 @@ import com.foodreservation.service.FoodReservationWS_Service;
 public class FormHistory extends javax.swing.JFrame {
     DefaultTableModel modelReservasi;
     DefaultTableModel modelPesanan;
-    FoodReservationWS_Service service = new FoodReservationWS_Service();
-    FoodReservationWS port = service.getFoodReservationWSPort();
+    FoodReservationWS_Service wsService = new FoodReservationWS_Service();
+    FoodReservationWS wsPort = wsService.getFoodReservationWSPort();
 
     private String currentUser;
+    private SocketClient socket;
+    private int userId;
     /**
      * Creates new form FormHistory
      */
-    public FormHistory(String username) {
-        initComponents();
+    public FormHistory(SocketClient socket, String username, int userId) {
         initTables();
+        this.socket = socket;
         this.currentUser = username;
+        this.userId = userId;
     }
     private void initTables() {
         modelReservasi = new DefaultTableModel(
@@ -147,13 +150,8 @@ public class FormHistory extends javax.swing.JFrame {
         try {
             modelReservasi.setRowCount(0);
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
+            java.util.List<String> reservations = wsPort.viewReservations(userId);
 
-            // Ambil semua reservasi user (contoh userId U001)
-            java.util.List<String> reservations = port.viewReservations("U001");
-
-            // Format data: tanggal;jam;meja;tamu;status
             for (String res : reservations) {
                 String[] parts = res.split(";");
                 modelReservasi.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
@@ -171,18 +169,13 @@ public class FormHistory extends javax.swing.JFrame {
         }
 
         try {
-            // Ambil reservationId dari tabel (misalnya kolom Meja atau ID sebenarnya)
-            String reservationId = String.valueOf(selectedRow + 1);
+            int reservationId = selectedRow + 1;
 
             modelPesanan.setRowCount(0);
             jTable1.setModel(modelPesanan);
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
+            java.util.List<String> orders = wsPort.viewOrderItems(reservationId);
 
-            java.util.List<String> orders = port.viewOrderItems(Integer.parseInt(reservationId));
-
-            // Format data: id;reservationId;menuName;qty;subtotal;status
             for (String ord : orders) {
                 String[] parts = ord.split(";");
                 modelPesanan.addRow(new Object[]{parts[2], parts[3], parts[4], parts[5]});
@@ -193,11 +186,8 @@ public class FormHistory extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDetailActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // Tutup form History
         this.dispose();
-
-        // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard(currentUser);
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, userId);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -232,7 +222,11 @@ public class FormHistory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormHistory("guest").setVisible(true);
+                try {
+                    new FormHistory(new SocketClient(), "guest", 0).setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

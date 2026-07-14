@@ -18,7 +18,7 @@ public class MyConnection {
     public Connection getConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/week13_nrp", "root", "");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/food_reservation", "root", "");
         } catch (Exception ex) {
             System.out.println("Error Get Connection : "+ex);
         }

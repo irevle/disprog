@@ -3,9 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
-import com.foodreservation.service.FoodReservationWS;
-import com.foodreservation.service.FoodReservationWS_Service;
-import com.foodreservation.service.RegisterResponse;
 import javax.swing.JOptionPane;
 
 /**
@@ -145,10 +142,9 @@ public class FormRegister extends javax.swing.JFrame {
                 return;
             }
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
-
-            boolean success = port.register(username, password, "Nama Lengkap Default", email, "08123456789");
+            SocketClient socket = new SocketClient();
+            boolean success = socket.register(username, password, "Nama Lengkap Default", email, "08123456789");
+            socket.close();
 
             if(success) {
                 JOptionPane.showMessageDialog(this, "Registrasi berhasil!");

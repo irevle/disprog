@@ -104,6 +104,12 @@ public class User extends MyModel {
         return success;
     }
 
+    public void setId(int id) { this.id = id; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public void setUsername(String username) { this.username = username; }
+
     @Override
     public ArrayList<Object> viewListData() {
         ArrayList<Object> collections = new ArrayList<>();

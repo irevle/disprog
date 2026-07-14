@@ -5,8 +5,6 @@
 package clienttcp;
 
 import javax.swing.JOptionPane;
-import com.foodreservation.service.FoodReservationWS;
-import com.foodreservation.service.FoodReservationWS_Service;
 
 /**
  *
@@ -14,12 +12,16 @@ import com.foodreservation.service.FoodReservationWS_Service;
  */
 public class FormReservation extends javax.swing.JFrame {
     private String currentUser;
+    private SocketClient socket;
+    private int userId;
     /**
      * Creates new form FormReservation
      */
-    public FormReservation(String username) {
+    public FormReservation(SocketClient socket, String username, int userId) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
+        this.userId = userId;
     }
 
     /**
@@ -182,12 +184,7 @@ public class FormReservation extends javax.swing.JFrame {
 
             int jmlTamu = Integer.parseInt(jmlTamuStr);
 
-            // Panggil web service
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
-
-            // asumsi createReservation return int (reservationId)
-            int reservationId = port.createReservation( /* userId */ 1, tanggal, waktuMulai, waktuSelesai, jmlTamu, "");
+            int reservationId = socket.reserve(userId, tanggal, waktuMulai, waktuSelesai, jmlTamu, "");
 
             if(reservationId > 0) {
                 jLabelMejaTamu.setText("Meja berhasil dialokasikan");
@@ -204,7 +201,7 @@ public class FormReservation extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonReservationActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        FormDashboard dashboard = new FormDashboard(currentUser);
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, userId);
         dashboard.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonCancelActionPerformed
@@ -240,7 +237,11 @@ public class FormReservation extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormReservation("Guest").setVisible(true);
+                try {
+                    new FormReservation(new SocketClient(), "Guest", 0).setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

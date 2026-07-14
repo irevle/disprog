@@ -14,11 +14,15 @@ import javax.swing.JOptionPane;
  */
 public class FormTableManagement extends javax.swing.JFrame {
     private String currentUser;
+    private SocketClient socket;
+    private FoodReservationWS_Service wsService = new FoodReservationWS_Service();
+    private FoodReservationWS wsPort = wsService.getFoodReservationWSPort();
     /**
      * Creates new form FormTableManagement
      */
-    public FormTableManagement(String username) {
+    public FormTableManagement(SocketClient socket, String username) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
     }
 
@@ -194,15 +198,7 @@ public class FormTableManagement extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             int nomorMeja = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
-
-            boolean hasil = port.deleteTable(nomorMeja);
-
-            if (hasil) {
-                model.removeRow(selectedRow);
-                JOptionPane.showMessageDialog(this, "Meja berhasil dihapus!");
-            }
+            wsPort.deleteTable(nomorMeja);
 
             model.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Meja berhasil dihapus!");
@@ -217,21 +213,7 @@ public class FormTableManagement extends javax.swing.JFrame {
             int kapasitas = Integer.parseInt(jTextFieldKapasitasMeja.getText());
             String status = (String) jComboBox1.getSelectedItem();
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
-
-            boolean hasil = port.addTable(
-                String.valueOf(nomorMeja),
-                kapasitas,
-                status
-            );
-
-            if (hasil) {
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                model.addRow(new Object[]{nomorMeja, kapasitas, status});
-
-                JOptionPane.showMessageDialog(this, "Meja berhasil ditambahkan!");
-            }
+            wsPort.addTable(String.valueOf(nomorMeja), kapasitas, status);
 
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.addRow(new Object[]{nomorMeja, kapasitas, status});
@@ -243,11 +225,8 @@ public class FormTableManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonTambahMejaActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // Tutup form History
         this.dispose();
-
-        // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard(currentUser);
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, 0);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -264,19 +243,9 @@ public class FormTableManagement extends javax.swing.JFrame {
             int kapasitas = Integer.parseInt(model.getValueAt(selectedRow, 1).toString());
             String status = model.getValueAt(selectedRow, 2).toString();
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
+            wsPort.updateTable(nomorMeja, String.valueOf(nomorMeja), kapasitas, status);
 
-            boolean hasil = port.updateTable(
-                nomorMeja,
-                String.valueOf(nomorMeja),
-                kapasitas,
-                status
-            );
-
-            if (hasil) {
-                JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
-            }
+            JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());
         }
@@ -316,7 +285,11 @@ public class FormTableManagement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormTableManagement("guest").setVisible(true);
+                try {
+                    new FormTableManagement(new SocketClient(), "guest").setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

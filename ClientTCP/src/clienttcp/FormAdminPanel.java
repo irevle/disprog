@@ -12,13 +12,17 @@ import javax.swing.JOptionPane;
  */
 public class FormAdminPanel extends javax.swing.JFrame {
     private String currentUser;
+    private SocketClient socket;
+    private int userId;
     /**
      * Creates new form FormAdminPanel
      */
-    public FormAdminPanel(String username) {
+    public FormAdminPanel(SocketClient socket, String username, int userId) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
-        jLabelUser.setText(username); // tampilkan nama admin
+        this.userId = userId;
+        jLabelUser.setText(username);
     }
 
     /**
@@ -180,10 +184,34 @@ public class FormAdminPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnMenuManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMenuManagementActionPerformed
-        FormMenuManagement menuForm = new FormMenuManagement(currentUser);
+        FormMenuManagement menuForm = new FormMenuManagement(socket, currentUser);
         menuForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnMenuManagementActionPerformed
+
+    private void BtnUserManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUserManagementActionPerformed
+        FormUserManagement userForm = new FormUserManagement(socket, currentUser);
+        userForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnUserManagementActionPerformed
+
+    private void BtnFoodOrderSystermActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnFoodOrderSystermActionPerformed
+        FormFoodOrdering foodForm = new FormFoodOrdering(socket, currentUser);
+        foodForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnFoodOrderSystermActionPerformed
+
+    private void BtnTableManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTableManagementActionPerformed
+        FormTableManagement tableForm = new FormTableManagement(socket, currentUser);
+        tableForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnTableManagementActionPerformed
+
+    private void BtnReservationSystemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnReservationSystemActionPerformed
+        FormReservation reservationForm = new FormReservation(socket, currentUser, userId);
+        reservationForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnReservationSystemActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
         this.dispose();
@@ -199,30 +227,6 @@ public class FormAdminPanel extends javax.swing.JFrame {
             new FormLogin().setVisible(true);
         }
     }//GEN-LAST:event_jButtonCancel1ActionPerformed
-
-    private void BtnUserManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUserManagementActionPerformed
-        FormUserManagement userForm = new FormUserManagement(currentUser);
-        userForm.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_BtnUserManagementActionPerformed
-
-    private void BtnFoodOrderSystermActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnFoodOrderSystermActionPerformed
-        FormFoodOrdering foodForm = new FormFoodOrdering(currentUser);
-        foodForm.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_BtnFoodOrderSystermActionPerformed
-
-    private void BtnTableManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTableManagementActionPerformed
-        FormTableManagement tableForm = new FormTableManagement(currentUser);
-        tableForm.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_BtnTableManagementActionPerformed
-
-    private void BtnReservationSystemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnReservationSystemActionPerformed
-        FormReservation reservationForm = new FormReservation(currentUser);
-        reservationForm.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_BtnReservationSystemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,7 +258,11 @@ public class FormAdminPanel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormAdminPanel("admin").setVisible(true);
+                try {
+                    new FormAdminPanel(new SocketClient(), "admin", 1).setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

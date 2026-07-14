@@ -4,8 +4,7 @@
  */
 package clienttcp;
 
-import com.foodreservation.service.FoodReservationWS;
-import com.foodreservation.service.FoodReservationWS_Service;
+import java.io.IOException;
 
 /**
  *
@@ -130,24 +129,22 @@ public class FormLogin extends javax.swing.JFrame {
                 return;
             }
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
+            SocketClient socket = new SocketClient();
+            String[] result = socket.login(username, password);
 
-            boolean loginResult = port.checkLogin(username, password);
-
-            if (loginResult) {
+            if (result != null) {
+                String role = result[0];
+                int userId = Integer.parseInt(result[1]);
                 javax.swing.JOptionPane.showMessageDialog(this, "Login berhasil!");
 
-                // pastikan server sudah punya method getUserRole
-                String role = port.getUserRole(username);
-
                 if("Admin".equalsIgnoreCase(role)) {
-                    new FormAdminPanel(username).setVisible(true);
+                    new FormAdminPanel(socket, username, userId).setVisible(true);
                 } else {
-                    new FormDashboard(username).setVisible(true);
+                    new FormDashboard(socket, username, userId).setVisible(true);
                 }
                 this.dispose();
             } else {
+                socket.close();
                 javax.swing.JOptionPane.showMessageDialog(this, "Login gagal, periksa username/password.");
             }
 

@@ -170,4 +170,103 @@ public class FoodReservationWS {
 
         }
     }
+
+    @WebMethod(operationName = "viewTables")
+    public ArrayList<String> viewTables() {
+        return tableModel.viewListDataString();
+    }
+
+    @WebMethod(operationName = "addMenuItem")
+    public boolean addMenuItem(@WebParam(name = "name") String name,
+                                @WebParam(name = "category") String category,
+                                @WebParam(name = "price") double price,
+                                @WebParam(name = "description") String description,
+                                @WebParam(name = "available") boolean available) {
+        try {
+            MenuItem m = new MenuItem();
+            m.setName(name);
+            m.setCategory(category);
+            m.setPrice(price);
+            m.setDescription(description);
+            m.setAvailable(available);
+            m.insertData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @WebMethod(operationName = "updateMenuItem")
+    public boolean updateMenuItem(@WebParam(name = "id") int id,
+                                   @WebParam(name = "name") String name,
+                                   @WebParam(name = "category") String category,
+                                   @WebParam(name = "price") double price,
+                                   @WebParam(name = "description") String description,
+                                   @WebParam(name = "available") boolean available) {
+        try {
+            MenuItem m = new MenuItem();
+            m.setId(id);
+            m.setName(name);
+            m.setCategory(category);
+            m.setPrice(price);
+            m.setDescription(description);
+            m.setAvailable(available);
+            m.updateData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @WebMethod(operationName = "deleteMenuItem")
+    public boolean deleteMenuItem(@WebParam(name = "id") int id) {
+        try {
+            MenuItem m = new MenuItem();
+            m.setId(id);
+            m.deleteData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @WebMethod(operationName = "viewUsers")
+    public ArrayList<String> viewUsers() {
+        return userModel.viewListDataString();
+    }
+
+    @WebMethod(operationName = "updateUser")
+    public boolean updateUser(@WebParam(name = "id") int id,
+                               @WebParam(name = "fullName") String fullName,
+                               @WebParam(name = "email") String email,
+                               @WebParam(name = "phone") String phone) {
+        try {
+            User u = new User();
+            u.setId(id);
+            u.setFullName(fullName);
+            u.setEmail(email);
+            u.setPhone(phone);
+            u.updateData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @WebMethod(operationName = "deleteUser")
+    public boolean deleteUser(@WebParam(name = "id") int id) {
+        try {
+            User u = new User();
+            u.setId(id);
+            u.deleteData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

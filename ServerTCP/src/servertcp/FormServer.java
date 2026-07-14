@@ -101,7 +101,9 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     String password = parts[2];
                     boolean ok = userModel.checkLogin(username, password);
                     if (ok) {
-                        client.sendMsg("OK|Login success");
+                        String role = userModel.getUserRole(username);
+                        int userId = userModel.getUserId(username);  // need to add this method
+                        client.sendMsg("OK|" + role + "|" + userId);
                         log(username + " logged in");
                     } else {
                         client.sendMsg("ERR|Invalid username or password");

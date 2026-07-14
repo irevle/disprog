@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
-import com.foodreservation.model.MenuItem;
-import com.foodreservation.model.OrderItem;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +11,13 @@ import javax.swing.JOptionPane;
  */
 public class FormFoodOrdering extends javax.swing.JFrame {
     private String currentUser;
+    private SocketClient socket;
     /**
      * Creates new form FormFoodOrdering
      */
-    public FormFoodOrdering(String username) {
+    public FormFoodOrdering(SocketClient socket, String username) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
     }
 
@@ -222,13 +222,6 @@ public class FormFoodOrdering extends javax.swing.JFrame {
 
         try {
             javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-            String nama = (String) model.getValueAt(selectedRow, 0);
-
-            // hapus dari database menu_items berdasarkan nama
-            MenuItem m = new MenuItem();
-            // misalnya kamu set m.id dari pencarian, lalu:
-            m.deleteData();
-
             model.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Item berhasil dihapus!");
         } catch (Exception e) {
@@ -245,14 +238,8 @@ public class FormFoodOrdering extends javax.swing.JFrame {
             double subtotal = harga * qty;
             String status = jTextFieldSatus.getText();
 
-            // tampilkan subtotal otomatis
             jTextFieldSubtotal.setText(String.valueOf(subtotal));
 
-            // simpan ke database menu_items
-            MenuItem m = new MenuItem();
-            m.insertData(); // pastikan field name, category, price dll sudah di-set
-
-            // tambahkan ke tabel
             javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
             model.addRow(new Object[]{nama, kategori, harga, qty, subtotal, status});
 
@@ -263,11 +250,8 @@ public class FormFoodOrdering extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonTambahItemActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // Tutup form History
         this.dispose();
-
-        // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard(currentUser);
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, 0);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -287,10 +271,6 @@ public class FormFoodOrdering extends javax.swing.JFrame {
             int qty = Integer.parseInt(model.getValueAt(selectedRow, 3).toString());
             double subtotal = Double.parseDouble(model.getValueAt(selectedRow, 4).toString());
             String status = (String) model.getValueAt(selectedRow, 5);
-
-            // update ke database
-            OrderItem o = new OrderItem();
-            o.updateData(); // pastikan field id, quantity, subtotal, status sudah di-set
 
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
@@ -328,7 +308,11 @@ public class FormFoodOrdering extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormFoodOrdering("guest").setVisible(true);
+                try {
+                    new FormFoodOrdering(new SocketClient(), "guest").setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

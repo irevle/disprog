@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
-import com.foodreservation.service.FoodReservationWS;
-import com.foodreservation.service.FoodReservationWS_Service;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
@@ -14,11 +12,13 @@ import javax.swing.JOptionPane;
  */
 public class FormReservationMonitoring extends javax.swing.JFrame {
     private String currentUser;
+    private SocketClient socket;
     /**
      * Creates new form FormReservationMonitoring
      */
-    public FormReservationMonitoring(String username) {
+    public FormReservationMonitoring(SocketClient socket, String username) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
     }
 
@@ -245,20 +245,24 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
 
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int meja = Integer.parseInt(model.getValueAt(selectedRow, 2).toString());
+            String tgl = model.getValueAt(selectedRow, 0).toString();
+            String jam = model.getValueAt(selectedRow, 1).toString();
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
-
-            // reservationId, bukan nomor meja
-            boolean berhasil = port.cancelReservation(reservationId);
-
-            if (berhasil) {
-                model.removeRow(selectedRow);
+            String[] data = socket.getAllReservations();
+            int id = -1;
+            for (String row : data) {
+                String[] p = row.split(";");
+                if (p[3].equals(tgl) && p[4].equals(jam)) {
+                    id = Integer.parseInt(p[0]);
+                    break;
+                }
             }
 
-            model.removeRow(selectedRow);
-            JOptionPane.showMessageDialog(this, "Reservasi berhasil dihapus!");
+            if (id != -1) {
+                socket.cancelReservation(id);
+                model.removeRow(selectedRow);
+                JOptionPane.showMessageDialog(this, "Reservasi berhasil dihapus!");
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal hapus reservasi: " + e.getMessage());
         }
@@ -272,20 +276,9 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
             int tamu = Integer.parseInt(jTextFieldPassword.getText());
             String status = (String) jComboBox1.getSelectedItem();
 
-            FoodReservationWS_Service service = new FoodReservationWS_Service();
-            FoodReservationWS port = service.getFoodReservationWSPort();
-
-            // Contoh userId, sesuaikan dengan user yang login
             int userId = 1;
 
-            int reservationId = port.createReservation(
-                userId,
-                tanggal,
-                jam,
-                jam,
-                tamu,
-                status
-            );
+            int reservationId = socket.reserve(userId, tanggal, jam, jam, tamu, status);
 
             if (reservationId > 0) {
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -299,11 +292,8 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonTambahActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // Tutup form History
         this.dispose();
-
-        // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard(currentUser);
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, 0);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -316,19 +306,6 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
 
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            String tanggal = model.getValueAt(selectedRow, 0).toString();
-            String jam = model.getValueAt(selectedRow, 1).toString();
-            int meja = Integer.parseInt(model.getValueAt(selectedRow, 2).toString());
-            int tamu = Integer.parseInt(model.getValueAt(selectedRow, 3).toString());
-            String status = model.getValueAt(selectedRow, 4).toString();
-
-            Reservation r = new Reservation();
-            r.setTanggal(tanggal);
-            r.setJam(jam);
-            r.setMeja(meja);
-            r.setJumlahTamu(tamu);
-            r.setStatus(status);
-            r.updateData();
 
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
@@ -346,10 +323,14 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
 
-            Reservation r = new Reservation();
-            for (String data : r.searchByKeyword(keyword)) {
-                String[] parts = data.split(";");
-                model.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
+            String[] data = socket.getAllReservations();
+            for (String row : data) {
+                if (row.toLowerCase().contains(keyword.toLowerCase())) {
+                    String[] parts = row.split(";");
+                    int meja = Integer.parseInt(parts[2]);
+                    int tamu = Integer.parseInt(parts[6]);
+                    model.addRow(new Object[]{parts[3], parts[4], meja, tamu, parts[7]});
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal mencari: " + e.getMessage());
@@ -386,7 +367,11 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormReservationMonitoring("guest").setVisible(true);
+                try {
+                    new FormReservationMonitoring(new SocketClient(), "guest").setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

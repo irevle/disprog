@@ -82,6 +82,46 @@ public class User extends MyModel {
         }
         return success;
     }
+    
+    public String getUserRole(String username) {
+        String role = "Customer";
+        try {
+            if (!MyModel.conn.isClosed()) {
+                PreparedStatement sql = MyModel.conn.prepareStatement(
+                        "SELECT role FROM users WHERE username = ?"
+                );
+                sql.setString(1, username);
+                this.result = sql.executeQuery();
+                if (this.result.next()) {
+                    role = this.result.getString("role");
+                }
+                sql.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error getUserRole " + e);
+        }
+        return role;
+    }
+    
+    public int getUserId(String username) {
+        int id = -1;
+        try {
+            if (!MyModel.conn.isClosed()) {
+                PreparedStatement sql = MyModel.conn.prepareStatement(
+                        "SELECT id FROM users WHERE username = ?"
+                );
+                sql.setString(1, username);
+                this.result = sql.executeQuery();
+                if (this.result.next()) {
+                    id = this.result.getInt("id");
+                }
+                sql.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error getUserId " + e);
+        }
+        return id;
+    }
 
     @Override
     public ArrayList<Object> viewListData() {

@@ -12,12 +12,16 @@ import javax.swing.JOptionPane;
  */
 public class FormDashboard extends javax.swing.JFrame {
     private String currentUser;
+    private SocketClient socket;
+    private int userId;
     /**
      * Creates new form FormDashboard
      */
-    public FormDashboard(String username) {
+    public FormDashboard(SocketClient socket, String username, int userId) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
+        this.userId = userId;
         jLabelUser.setText(username);
     }
   
@@ -133,8 +137,8 @@ public class FormDashboard extends javax.swing.JFrame {
                         .addGap(52, 52, 52))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(236, 236, 236))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(216, 216, 216))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,19 +164,19 @@ public class FormDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonExitActionPerformed
 
     private void jButtonHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHistoryActionPerformed
-        FormHistory historyForm = new FormHistory(currentUser);
+        FormHistory historyForm = new FormHistory(socket, currentUser, userId);
         historyForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonHistoryActionPerformed
 
     private void jButtonMenuOrderingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMenuOrderingActionPerformed
-        FormMenuOrdering menuForm = new FormMenuOrdering(currentUser);
+        FormMenuOrdering menuForm = new FormMenuOrdering(socket, currentUser);
         menuForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonMenuOrderingActionPerformed
 
     private void jButtonReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservationActionPerformed
-        FormReservation reservationForm = new FormReservation(currentUser);
+        FormReservation reservationForm = new FormReservation(socket, currentUser, userId);
         reservationForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonReservationActionPerformed
@@ -219,7 +223,11 @@ public class FormDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormDashboard("guest").setVisible(true);
+                try {
+                    new FormDashboard(new SocketClient(), "guest", 0).setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

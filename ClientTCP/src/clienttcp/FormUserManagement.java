@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
-import com.foodreservation.model.User;
+import com.foodreservation.service.FoodReservationWS;
+import com.foodreservation.service.FoodReservationWS_Service;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
@@ -13,11 +14,15 @@ import javax.swing.JOptionPane;
  */
 public class FormUserManagement extends javax.swing.JFrame {
     private String currentUser;
+    private SocketClient socket;
+    private FoodReservationWS_Service wsService = new FoodReservationWS_Service();
+    private FoodReservationWS wsPort = wsService.getFoodReservationWSPort();
     /**
      * Creates new form FormUserManagerment
      */
-    public FormUserManagement(String username) {
+    public FormUserManagement(SocketClient socket, String username) {
         initComponents();
+        this.socket = socket;
         this.currentUser = username;
     }
 
@@ -199,11 +204,8 @@ public class FormUserManagement extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // Tutup form History
         this.dispose();
-
-        // Buka kembali Dashboard
-        FormDashboard dashboard = new FormDashboard(currentUser);
+        FormDashboard dashboard = new FormDashboard(socket, currentUser, 0);
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -218,22 +220,14 @@ public class FormUserManagement extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             String username = (String) model.getValueAt(selectedRow, 0);
             String email = (String) model.getValueAt(selectedRow, 1);
-            String password = (String) model.getValueAt(selectedRow, 2);
-            String role = (String) model.getValueAt(selectedRow, 3);
 
-            User u = new User();
-            for (String data : u.viewListDataString()) {
+            for (String data : wsPort.viewUsers()) {
                 String[] parts = data.split(";");
                 if (parts[1].equals(username)) {
-                    u.id = Integer.parseInt(parts[0]);
+                    wsPort.updateUser(Integer.parseInt(parts[0]), parts[2], email, parts[4]);
                     break;
                 }
             }
-            u.username = username;
-            u.password = password;
-            u.email = email;
-            u.role = role;
-            u.updateData();
 
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
@@ -252,15 +246,13 @@ public class FormUserManagement extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             String username = (String) model.getValueAt(selectedRow, 0);
 
-            User u = new User();
-            for (String data : u.viewListDataString()) {
+            for (String data : wsPort.viewUsers()) {
                 String[] parts = data.split(";");
                 if (parts[1].equals(username)) {
-                    u.id = Integer.parseInt(parts[0]);
+                    wsPort.deleteUser(Integer.parseInt(parts[0]));
                     break;
                 }
             }
-            u.deleteData();
 
             model.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "User berhasil dihapus!");
@@ -276,12 +268,7 @@ public class FormUserManagement extends javax.swing.JFrame {
             String password = jTextFieldPassword.getText();
             String role = (String) jComboBox1.getSelectedItem();
 
-            User u = new User();
-            u.username = username;
-            u.password = password;
-            u.email = email;
-            u.role = role;
-            u.insertData();
+            wsPort.register(username, password, "", email, "");
 
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.addRow(new Object[]{username, email, password, role});
@@ -327,7 +314,11 @@ public class FormUserManagement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormUserManagement("guest").setVisible(true);
+                try {
+                    new FormUserManagement(new SocketClient(), "guest").setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -72,6 +72,13 @@ public class MenuItem extends MyModel {
         return collections;
     }
 
+    public void setId(int id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setCategory(String category) { this.category = category; }
+    public void setPrice(double price) { this.price = price; }
+    public void setDescription(String description) { this.description = description; }
+    public void setAvailable(boolean available) { this.available = available; }
+
     @Override
     public ArrayList<Object> viewListData() {
         ArrayList<Object> collections = new ArrayList<>();

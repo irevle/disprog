@@ -12,12 +12,14 @@ import javax.swing.table.DefaultTableModel;
 public class FormMenuOrdering extends javax.swing.JFrame {
     DefaultTableModel model;
     private String currentUser;
+    private SocketClient socket;
     /**
      * Creates new form FormMenuOrdering
      */
-    public FormMenuOrdering(String username) {
+    public FormMenuOrdering(SocketClient socket, String username) {
         initComponents();
         initTable();
+        this.socket = socket;
         this.currentUser = username;
     }
     
@@ -271,8 +273,7 @@ public class FormMenuOrdering extends javax.swing.JFrame {
 
     private void jButtonPesanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesanActionPerformed
         try {
-            OrderItem orderItem = new OrderItem();
-            int reservationId = 1; // sesuaikan dengan reservasi aktif
+            int reservationId = 1;
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 String menu = (String) model.getValueAt(i, 0);
@@ -288,7 +289,7 @@ public class FormMenuOrdering extends javax.swing.JFrame {
                 else if(menu.equals("Gado-Gado")) menuItemId = 6;
                 else if(menu.equals("Rendang")) menuItemId = 7;
 
-                boolean success = orderItem.createOrderItem(reservationId, menuItemId, jumlah, subtotal);
+                boolean success = socket.addOrderItem(reservationId, menuItemId, jumlah, subtotal);
                 if (!success) {
                     jLabelStatusOrder.setText("Gagal simpan order untuk " + menu);
                     return;
@@ -352,7 +353,11 @@ public class FormMenuOrdering extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMenuOrdering("guest").setVisible(true);
+                try {
+                    new FormMenuOrdering(new SocketClient(), "guest").setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
