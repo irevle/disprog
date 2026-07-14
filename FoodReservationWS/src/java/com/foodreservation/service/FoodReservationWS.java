@@ -118,15 +118,11 @@ public class FoodReservationWS {
     public boolean addTable(String tableNumber, int capacity, String status) {
         try {
             Table t = new Table();
-
             t.setTableNumber(tableNumber);
             t.setCapacity(capacity);
             t.setStatus(status);
-
             t.insertData();
-
             return true;
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -138,13 +134,9 @@ public class FoodReservationWS {
     public boolean deleteTable(int id) {
         try {
             Table t = new Table();
-
             t.setId(id);
-
             t.deleteData();
-
             return true;
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -157,23 +149,16 @@ public class FoodReservationWS {
                                String status) {
 
         try {
-
             Table t = new Table();
-
             t.setId(id);
             t.setTableNumber(tableNumber);
             t.setCapacity(capacity);
             t.setStatus(status);
-
             t.updateData();
-
             return true;
-
         } catch (Exception e) {
-
             e.printStackTrace();
             return false;
-
         }
     }
 
