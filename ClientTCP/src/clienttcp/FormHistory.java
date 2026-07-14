@@ -64,6 +64,11 @@ public class FormHistory extends javax.swing.JFrame {
         jButtonBack = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButtonDetail = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jTextFieldStartDate = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldEndDate = new javax.swing.JTextField();
+        jButtonFilter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -111,35 +116,72 @@ public class FormHistory extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Sorting dari tanggal (YYYY-MM-DD)");
+
+        jTextFieldStartDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldStartDateActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("sampai");
+
+        jTextFieldEndDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldEndDateActionPerformed(evt);
+            }
+        });
+
+        jButtonFilter.setText("Filter");
+        jButtonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFilterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonFilter))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonBack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(78, 78, 78)
                         .addComponent(jButtonRefresh)
-                        .addGap(51, 51, 51)
-                        .addComponent(jButtonDetail)
-                        .addGap(127, 127, 127))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(41, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(259, 259, 259)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonDetail))
+                    .addComponent(jScrollPane1))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextFieldStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonFilter))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRefresh)
@@ -198,6 +240,46 @@ public class FormHistory extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
+    private void jTextFieldStartDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldStartDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldStartDateActionPerformed
+
+    private void jTextFieldEndDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEndDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldEndDateActionPerformed
+
+    private void jButtonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFilterActionPerformed
+        try {
+            String start = jTextFieldStartDate.getText().trim();
+            String end = jTextFieldEndDate.getText().trim();
+
+            modelReservasi.setRowCount(0);
+            reservationIds.clear();
+
+            java.util.List<String> reservations = wsPort.viewReservations(userId);
+
+            for (String res : reservations) {
+                String[] parts = res.split(";");
+                String date = parts[3]; // reservation_date
+
+                boolean ok = true;
+                if (!start.isEmpty() && date.compareTo(start) < 0) {
+                    ok = false;
+                }
+                if (!end.isEmpty() && date.compareTo(end) > 0) {
+                    ok = false;
+                }
+
+                if (ok) {
+                    reservationIds.add(Integer.parseInt(parts[0]));
+                    modelReservasi.addRow(new Object[]{parts[3], parts[4], parts[2], parts[6], parts[7]});
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal filter: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonFilterActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -241,9 +323,14 @@ public class FormHistory extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonDetail;
+    private javax.swing.JButton jButtonFilter;
     private javax.swing.JButton jButtonRefresh;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldEndDate;
+    private javax.swing.JTextField jTextFieldStartDate;
     // End of variables declaration//GEN-END:variables
 }

@@ -229,8 +229,8 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextFieldUsername1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonFind, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)))
+                        .addComponent(jButtonFind)
+                        .addGap(18, 18, 18)))
                 .addGap(0, 53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

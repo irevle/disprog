@@ -88,8 +88,8 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jTextFieldUsername1" min="-2" pref="288" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jButtonFind" min="-2" pref="55" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="jButtonFind" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="0" pref="53" max="32767" attributes="0"/>
