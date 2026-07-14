@@ -12,12 +12,12 @@ import javax.swing.table.DefaultTableModel;
 public class FormMenuOrdering extends javax.swing.JFrame {
     DefaultTableModel model;
     private String currentUser;
-    private int userId;
     private SocketClient socket;
+    private int userId;
     /**
      * Creates new form FormMenuOrdering
      */
-    public FormMenuOrdering(SocketClient socket, String username) {
+    public FormMenuOrdering(SocketClient socket, String username, int userId) {
         initComponents();
         initTable();
         this.socket = socket;
@@ -358,7 +358,7 @@ public class FormMenuOrdering extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new FormMenuOrdering(new SocketClient(), "guest").setVisible(true);
+                    new FormMenuOrdering(new SocketClient(), "guest", 0).setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.3 (RELEASE-2.4.3-ad3323c; 2019-01-21T17:46:06+0000) JAXWS-RI/2.3.2 JAXWS-API/2.3.2 JAXB-RI/2.3.2 JAXB-API/2.3.2 git-revision#unknown. --><xs:schema xmlns:tns="http://service.foodreservation.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.foodreservation.com/">
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.0 (wsit240-7e98ff4; 2017-08-03T21:19:54+0200) JAXWS-RI/2.3.0 JAXWS-API/2.3.0 JAXB-RI/2.3.0 JAXB-API/2.3.0 svn-revision#unknown. --><xs:schema xmlns:tns="http://service.foodreservation.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.foodreservation.com/">
 
 <xs:element name="addMenuItem" type="tns:addMenuItem"/>
 
@@ -88,19 +88,6 @@
 
 <xs:element name="viewUsersResponse" type="tns:viewUsersResponse"/>
 
-<xs:complexType name="updateOrderStatus">
-<xs:sequence>
-<xs:element name="orderItemId" type="xs:int"/>
-<xs:element name="status" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="updateOrderStatusResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="checkLogin">
 <xs:sequence>
 <xs:element name="username" type="xs:string" minOccurs="0"/>
@@ -123,6 +110,19 @@
 <xs:complexType name="viewReservationsResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateOrderStatus">
+<xs:sequence>
+<xs:element name="orderItemId" type="xs:int"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateOrderStatusResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -181,6 +181,18 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="searchMenu">
+<xs:sequence>
+<xs:element name="keyword" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchMenuResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="createReservation">
 <xs:sequence>
 <xs:element name="userId" type="xs:int"/>
@@ -195,18 +207,6 @@
 <xs:complexType name="createReservationResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:int"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="searchMenu">
-<xs:sequence>
-<xs:element name="keyword" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="searchMenuResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -249,18 +249,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="deleteMenuItem">
-<xs:sequence>
-<xs:element name="id" type="xs:int"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="deleteMenuItemResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="deleteTable">
 <xs:sequence>
 <xs:element name="arg0" type="xs:int"/>
@@ -268,6 +256,18 @@
 </xs:complexType>
 
 <xs:complexType name="deleteTableResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteMenuItem">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deleteMenuItemResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
@@ -313,15 +313,19 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="viewOrderItems">
+<xs:complexType name="addMenuItem">
 <xs:sequence>
-<xs:element name="reservationId" type="xs:int"/>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="category" type="xs:string" minOccurs="0"/>
+<xs:element name="price" type="xs:double"/>
+<xs:element name="description" type="xs:string" minOccurs="0"/>
+<xs:element name="available" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="viewOrderItemsResponse">
+<xs:complexType name="addMenuItemResponse">
 <xs:sequence>
-<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -337,19 +341,15 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="addMenuItem">
+<xs:complexType name="viewOrderItems">
 <xs:sequence>
-<xs:element name="name" type="xs:string" minOccurs="0"/>
-<xs:element name="category" type="xs:string" minOccurs="0"/>
-<xs:element name="price" type="xs:double"/>
-<xs:element name="description" type="xs:string" minOccurs="0"/>
-<xs:element name="available" type="xs:boolean"/>
+<xs:element name="reservationId" type="xs:int"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="addMenuItemResponse">
+<xs:complexType name="viewOrderItemsResponse">
 <xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 

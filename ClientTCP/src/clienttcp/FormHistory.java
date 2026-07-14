@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import com.foodreservation.service.FoodReservationWS;
 import com.foodreservation.service.FoodReservationWS_Service;
 
@@ -25,6 +27,7 @@ public class FormHistory extends javax.swing.JFrame {
     private String currentUser;
     private SocketClient socket;
     private int userId;
+    private List<Integer> reservationIds = new ArrayList<>();
     /**
      * Creates new form FormHistory
      */
@@ -150,12 +153,14 @@ public class FormHistory extends javax.swing.JFrame {
     private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
         try {
             modelReservasi.setRowCount(0);
+            reservationIds.clear();
 
             java.util.List<String> reservations = wsPort.viewReservations(userId);
 
             for (String res : reservations) {
                 String[] parts = res.split(";");
-                modelReservasi.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
+                reservationIds.add(Integer.parseInt(parts[0]));
+                modelReservasi.addRow(new Object[]{parts[3], parts[4], parts[2], parts[6], parts[7]});
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal ambil history: " + e.getMessage());
@@ -170,7 +175,7 @@ public class FormHistory extends javax.swing.JFrame {
         }
 
         try {
-            int reservationId = selectedRow + 1;
+            int reservationId = reservationIds.get(selectedRow);
 
             modelPesanan.setRowCount(0);
             jTable1.setModel(modelPesanan);

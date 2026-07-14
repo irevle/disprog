@@ -103,6 +103,12 @@ public class FoodReservationWS {
     public ArrayList<String> viewOrderItems(@WebParam(name = "reservationId") int reservationId) {
         return orderModel.viewOrderItems(reservationId);
     }
+
+    @WebMethod(operationName = "viewAllOrderItems")
+    public ArrayList<String> viewAllOrderItems() {
+        return orderModel.viewAllOrderItems();
+    }
+
     @WebMethod(operationName = "getUserRole")
     public String getUserRole(@WebParam(name = "username") String username) {
         User u = new User();

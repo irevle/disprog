@@ -5,6 +5,8 @@
 package clienttcp;
 import com.foodreservation.service.FoodReservationWS;
 import com.foodreservation.service.FoodReservationWS_Service;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
@@ -17,6 +19,7 @@ public class FormTableManagement extends javax.swing.JFrame {
     private SocketClient socket;
     private FoodReservationWS_Service wsService = new FoodReservationWS_Service();
     private FoodReservationWS wsPort = wsService.getFoodReservationWSPort();
+    private List<Integer> tableIds = new ArrayList<>();
     /**
      * Creates new form FormTableManagement
      */
@@ -24,6 +27,25 @@ public class FormTableManagement extends javax.swing.JFrame {
         initComponents();
         this.socket = socket;
         this.currentUser = username;
+        loadAllTables();
+    }
+
+    private void loadAllTables() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            tableIds.clear();
+            for (String data : wsPort.viewTables()) {
+                String[] parts = data.split(";");
+                tableIds.add(Integer.parseInt(parts[0]));
+                String nomorMeja = parts[1];
+                int kapasitas = Integer.parseInt(parts[2]);
+                String status = parts[3];
+                model.addRow(new Object[]{nomorMeja, kapasitas, status});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat data meja: " + e.getMessage());
+        }
     }
 
     /**
@@ -69,23 +91,12 @@ public class FormTableManagement extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Nomor Meja", "Kapasitas Meja", "Status Meja"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ) );
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setText("Kapasitas Meja");
@@ -196,11 +207,10 @@ public class FormTableManagement extends javax.swing.JFrame {
 
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int nomorMeja = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+            int id = tableIds.get(selectedRow);
 
-            wsPort.deleteTable(nomorMeja);
-
-            model.removeRow(selectedRow);
+            wsPort.deleteTable(id);
+            loadAllTables();
             JOptionPane.showMessageDialog(this, "Meja berhasil dihapus!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal hapus meja: " + e.getMessage());
@@ -209,15 +219,12 @@ public class FormTableManagement extends javax.swing.JFrame {
 
     private void jButtonTambahMejaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTambahMejaActionPerformed
         try {
-            int nomorMeja = Integer.parseInt(jTextFieldNomorMeja.getText());
+            String nomorMeja = jTextFieldNomorMeja.getText();
             int kapasitas = Integer.parseInt(jTextFieldKapasitasMeja.getText());
             String status = (String) jComboBox1.getSelectedItem();
 
-            wsPort.addTable(String.valueOf(nomorMeja), kapasitas, status);
-
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.addRow(new Object[]{nomorMeja, kapasitas, status});
-
+            wsPort.addTable(nomorMeja, kapasitas, status);
+            loadAllTables();
             JOptionPane.showMessageDialog(this, "Meja berhasil ditambahkan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal tambah meja: " + e.getMessage());
@@ -239,12 +246,13 @@ public class FormTableManagement extends javax.swing.JFrame {
 
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int nomorMeja = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+            int id = tableIds.get(selectedRow);
+            String nomorMeja = (String) model.getValueAt(selectedRow, 0);
             int kapasitas = Integer.parseInt(model.getValueAt(selectedRow, 1).toString());
-            String status = model.getValueAt(selectedRow, 2).toString();
+            String status = (String) model.getValueAt(selectedRow, 2);
 
-            wsPort.updateTable(nomorMeja, String.valueOf(nomorMeja), kapasitas, status);
-
+            wsPort.updateTable(id, nomorMeja, kapasitas, status);
+            loadAllTables();
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());

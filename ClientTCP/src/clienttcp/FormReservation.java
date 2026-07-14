@@ -5,6 +5,10 @@
 package clienttcp;
 
 import javax.swing.JOptionPane;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -19,9 +23,20 @@ public class FormReservation extends javax.swing.JFrame {
      */
     public FormReservation(SocketClient socket, String username, int userId) {
         initComponents();
+        populateDateComboBox();
         this.socket = socket;
         this.currentUser = username;
         this.userId = userId;
+    }
+
+    private void populateDateComboBox() {
+        jComboBoxTanggal.removeAllItems();
+        SimpleDateFormat displayFormat = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
+        Calendar cal = Calendar.getInstance();
+        for (int i = 0; i < 31; i++) {
+            jComboBoxTanggal.addItem(displayFormat.format(cal.getTime()));
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
     }
 
     /**
@@ -57,7 +72,7 @@ public class FormReservation extends javax.swing.JFrame {
 
         jLabel3.setText("Jumlah tamu");
 
-        jComboBoxTanggal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 July 2026", "2 July 2026", "3 July 2026", "4 July 2026", "5 July 2026", "6 July 2026", "7 July 2026", "8 July 2026", "9 July 2026", "10 July 2026", "11 July 2026", "12 July 2026", "13 July 2026", "14 July 2026", "15 July 2026", "16 July 2026", "17 July 2026", "18 July 2026", "19 July 2026", "20 July 2026", "21 July 2026", "22 July 2026", "23 July 2026", "24 July 2026", "25 July 2026", "26 July 2026", "27 July 2026", "28 July 2026", "29 July 2026", "30 July 2026", "31 July 2026", " " }));
+        jComboBoxTanggal.setModel(new javax.swing.DefaultComboBoxModel<>());
 
         jButtonReservation.setText("Reservation");
         jButtonReservation.addActionListener(new java.awt.event.ActionListener() {
@@ -66,7 +81,7 @@ public class FormReservation extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxWaktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", " " }));
+        jComboBoxWaktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" }));
 
         jLabel4.setText("Reservation");
 
@@ -81,7 +96,7 @@ public class FormReservation extends javax.swing.JFrame {
 
         jLabel6.setText("Waktu selesai");
 
-        jComboBoxWaktu1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", " " }));
+        jComboBoxWaktu1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" }));
 
         jLabel7.setText("meja tamu :");
 
@@ -172,17 +187,22 @@ public class FormReservation extends javax.swing.JFrame {
 
     private void jButtonReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservationActionPerformed
          try {
-            String tanggal = (String) jComboBoxTanggal.getSelectedItem();
+            String tanggalDisplay = (String) jComboBoxTanggal.getSelectedItem();
             String waktuMulai = (String) jComboBoxWaktu.getSelectedItem();
             String waktuSelesai = (String) jComboBoxWaktu1.getSelectedItem();
             String jmlTamuStr = jTextFieldJlmTamu.getText();
 
-            if(tanggal == null || waktuMulai == null || waktuSelesai == null || jmlTamuStr.isEmpty()) {
+            if(tanggalDisplay == null || waktuMulai == null || waktuSelesai == null || jmlTamuStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Semua field wajib diisi!");
                 return;
             }
 
             int jmlTamu = Integer.parseInt(jmlTamuStr);
+
+            SimpleDateFormat displayFormat = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
+            SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsed = displayFormat.parse(tanggalDisplay);
+            String tanggal = dbFormat.format(parsed);
 
             int reservationId = socket.reserve(userId, tanggal, waktuMulai, waktuSelesai, jmlTamu, "");
 

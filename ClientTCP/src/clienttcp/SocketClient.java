@@ -25,6 +25,9 @@ public class SocketClient {
     }
 
     private String sendCommand(String cmd) throws IOException {
+        while (reader.ready()) {
+            reader.readLine();
+        }
         writer.writeBytes(cmd + "\n");
         return reader.readLine();
     }
@@ -73,6 +76,13 @@ public class SocketClient {
 
     public String[] getOrderItems(int reservationId) throws IOException {
         String res = sendCommand("GET_ORDER_ITEMS|" + reservationId);
+        if (res.startsWith("OK|"))
+            return res.substring(3).split("~");
+        return new String[0];
+    }
+
+    public String[] getAllOrderItems() throws IOException {
+        String res = sendCommand("GET_ALL_ORDER_ITEMS");
         if (res.startsWith("OK|"))
             return res.substring(3).split("~");
         return new String[0];

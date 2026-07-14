@@ -28,29 +28,20 @@ public interface FoodReservationWS {
     /**
      * 
      * @param password
-     * @param phone
-     * @param fullName
-     * @param email
      * @param username
      * @return
      *     returns boolean
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "register", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.Register")
-    @ResponseWrapper(localName = "registerResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.RegisterResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/registerRequest", output = "http://service.foodreservation.com/FoodReservationWS/registerResponse")
-    public boolean register(
+    @RequestWrapper(localName = "checkLogin", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CheckLogin")
+    @ResponseWrapper(localName = "checkLoginResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CheckLoginResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/checkLoginRequest", output = "http://service.foodreservation.com/FoodReservationWS/checkLoginResponse")
+    public boolean checkLogin(
         @WebParam(name = "username", targetNamespace = "")
         String username,
         @WebParam(name = "password", targetNamespace = "")
-        String password,
-        @WebParam(name = "fullName", targetNamespace = "")
-        String fullName,
-        @WebParam(name = "email", targetNamespace = "")
-        String email,
-        @WebParam(name = "phone", targetNamespace = "")
-        String phone);
+        String password);
 
     /**
      * 
@@ -59,10 +50,40 @@ public interface FoodReservationWS {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "viewAllReservations", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewAllReservations")
-    @ResponseWrapper(localName = "viewAllReservationsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewAllReservationsResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewAllReservationsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewAllReservationsResponse")
-    public List<String> viewAllReservations();
+    @RequestWrapper(localName = "viewMenuItems", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewMenuItems")
+    @ResponseWrapper(localName = "viewMenuItemsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewMenuItemsResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewMenuItemsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewMenuItemsResponse")
+    public List<String> viewMenuItems();
+
+    /**
+     * 
+     * @param keyword
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "searchMenu", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.SearchMenu")
+    @ResponseWrapper(localName = "searchMenuResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.SearchMenuResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/searchMenuRequest", output = "http://service.foodreservation.com/FoodReservationWS/searchMenuResponse")
+    public List<String> searchMenu(
+        @WebParam(name = "keyword", targetNamespace = "")
+        String keyword);
+
+    /**
+     * 
+     * @param userId
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "viewReservations", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewReservations")
+    @ResponseWrapper(localName = "viewReservationsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewReservationsResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewReservationsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewReservationsResponse")
+    public List<String> viewReservations(
+        @WebParam(name = "userId", targetNamespace = "")
+        int userId);
 
     /**
      * 
@@ -84,192 +105,6 @@ public interface FoodReservationWS {
 
     /**
      * 
-     * @param reservationId
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "cancelReservation", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CancelReservation")
-    @ResponseWrapper(localName = "cancelReservationResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CancelReservationResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/cancelReservationRequest", output = "http://service.foodreservation.com/FoodReservationWS/cancelReservationResponse")
-    public boolean cancelReservation(
-        @WebParam(name = "reservationId", targetNamespace = "")
-        int reservationId);
-
-    /**
-     * 
-     * @param date
-     * @param notes
-     * @param guests
-     * @param time
-     * @param endTime
-     * @param userId
-     * @return
-     *     returns int
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createReservation", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateReservation")
-    @ResponseWrapper(localName = "createReservationResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateReservationResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/createReservationRequest", output = "http://service.foodreservation.com/FoodReservationWS/createReservationResponse")
-    public int createReservation(
-        @WebParam(name = "userId", targetNamespace = "")
-        int userId,
-        @WebParam(name = "date", targetNamespace = "")
-        String date,
-        @WebParam(name = "time", targetNamespace = "")
-        String time,
-        @WebParam(name = "endTime", targetNamespace = "")
-        String endTime,
-        @WebParam(name = "guests", targetNamespace = "")
-        int guests,
-        @WebParam(name = "notes", targetNamespace = "")
-        String notes);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addTable", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddTable")
-    @ResponseWrapper(localName = "addTableResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddTableResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/addTableRequest", output = "http://service.foodreservation.com/FoodReservationWS/addTableResponse")
-    public boolean addTable(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        int arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2);
-
-    /**
-     * 
-     * @param phone
-     * @param fullName
-     * @param id
-     * @param email
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "updateUser", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.UpdateUser")
-    @ResponseWrapper(localName = "updateUserResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.UpdateUserResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/updateUserRequest", output = "http://service.foodreservation.com/FoodReservationWS/updateUserResponse")
-    public boolean updateUser(
-        @WebParam(name = "id", targetNamespace = "")
-        int id,
-        @WebParam(name = "fullName", targetNamespace = "")
-        String fullName,
-        @WebParam(name = "email", targetNamespace = "")
-        String email,
-        @WebParam(name = "phone", targetNamespace = "")
-        String phone);
-
-    /**
-     * 
-     * @param keyword
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "searchMenu", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.SearchMenu")
-    @ResponseWrapper(localName = "searchMenuResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.SearchMenuResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/searchMenuRequest", output = "http://service.foodreservation.com/FoodReservationWS/searchMenuResponse")
-    public List<String> searchMenu(
-        @WebParam(name = "keyword", targetNamespace = "")
-        String keyword);
-
-    /**
-     * 
-     * @param id
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "deleteMenuItem", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.DeleteMenuItem")
-    @ResponseWrapper(localName = "deleteMenuItemResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.DeleteMenuItemResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/deleteMenuItemRequest", output = "http://service.foodreservation.com/FoodReservationWS/deleteMenuItemResponse")
-    public boolean deleteMenuItem(
-        @WebParam(name = "id", targetNamespace = "")
-        int id);
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "viewTables", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewTables")
-    @ResponseWrapper(localName = "viewTablesResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewTablesResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewTablesRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewTablesResponse")
-    public List<String> viewTables();
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "viewUsers", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewUsers")
-    @ResponseWrapper(localName = "viewUsersResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewUsersResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewUsersRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewUsersResponse")
-    public List<String> viewUsers();
-
-    /**
-     * 
-     * @param quantity
-     * @param reservationId
-     * @param subtotal
-     * @param menuItemId
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createOrderItem", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateOrderItem")
-    @ResponseWrapper(localName = "createOrderItemResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateOrderItemResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/createOrderItemRequest", output = "http://service.foodreservation.com/FoodReservationWS/createOrderItemResponse")
-    public boolean createOrderItem(
-        @WebParam(name = "reservationId", targetNamespace = "")
-        int reservationId,
-        @WebParam(name = "menuItemId", targetNamespace = "")
-        int menuItemId,
-        @WebParam(name = "quantity", targetNamespace = "")
-        int quantity,
-        @WebParam(name = "subtotal", targetNamespace = "")
-        double subtotal);
-
-    /**
-     * 
-     * @param password
-     * @param username
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "checkLogin", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CheckLogin")
-    @ResponseWrapper(localName = "checkLoginResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CheckLoginResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/checkLoginRequest", output = "http://service.foodreservation.com/FoodReservationWS/checkLoginResponse")
-    public boolean checkLogin(
-        @WebParam(name = "username", targetNamespace = "")
-        String username,
-        @WebParam(name = "password", targetNamespace = "")
-        String password);
-
-    /**
-     * 
      * @param arg0
      * @return
      *     returns boolean
@@ -282,48 +117,6 @@ public interface FoodReservationWS {
     public boolean deleteTable(
         @WebParam(name = "arg0", targetNamespace = "")
         int arg0);
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "viewMenuItems", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewMenuItems")
-    @ResponseWrapper(localName = "viewMenuItemsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewMenuItemsResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewMenuItemsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewMenuItemsResponse")
-    public List<String> viewMenuItems();
-
-    /**
-     * 
-     * @param reservationId
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "viewOrderItems", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewOrderItems")
-    @ResponseWrapper(localName = "viewOrderItemsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewOrderItemsResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewOrderItemsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewOrderItemsResponse")
-    public List<String> viewOrderItems(
-        @WebParam(name = "reservationId", targetNamespace = "")
-        int reservationId);
-
-    /**
-     * 
-     * @param username
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getUserRole", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.GetUserRole")
-    @ResponseWrapper(localName = "getUserRoleResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.GetUserRoleResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/getUserRoleRequest", output = "http://service.foodreservation.com/FoodReservationWS/getUserRoleResponse")
-    public String getUserRole(
-        @WebParam(name = "username", targetNamespace = "")
-        String username);
 
     /**
      * 
@@ -348,6 +141,45 @@ public interface FoodReservationWS {
         int arg2,
         @WebParam(name = "arg3", targetNamespace = "")
         String arg3);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "viewTables", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewTables")
+    @ResponseWrapper(localName = "viewTablesResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewTablesResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewTablesRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewTablesResponse")
+    public List<String> viewTables();
+
+    /**
+     * 
+     * @param price
+     * @param name
+     * @param available
+     * @param description
+     * @param category
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "addMenuItem", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddMenuItem")
+    @ResponseWrapper(localName = "addMenuItemResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddMenuItemResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/addMenuItemRequest", output = "http://service.foodreservation.com/FoodReservationWS/addMenuItemResponse")
+    public boolean addMenuItem(
+        @WebParam(name = "name", targetNamespace = "")
+        String name,
+        @WebParam(name = "category", targetNamespace = "")
+        String category,
+        @WebParam(name = "price", targetNamespace = "")
+        double price,
+        @WebParam(name = "description", targetNamespace = "")
+        String description,
+        @WebParam(name = "available", targetNamespace = "")
+        boolean available);
 
     /**
      * 
@@ -387,6 +219,33 @@ public interface FoodReservationWS {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "deleteMenuItem", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.DeleteMenuItem")
+    @ResponseWrapper(localName = "deleteMenuItemResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.DeleteMenuItemResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/deleteMenuItemRequest", output = "http://service.foodreservation.com/FoodReservationWS/deleteMenuItemResponse")
+    public boolean deleteMenuItem(
+        @WebParam(name = "id", targetNamespace = "")
+        int id);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "viewUsers", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewUsers")
+    @ResponseWrapper(localName = "viewUsersResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewUsersResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewUsersRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewUsersResponse")
+    public List<String> viewUsers();
+
+    /**
+     * 
+     * @param id
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "deleteUser", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.DeleteUser")
     @ResponseWrapper(localName = "deleteUserResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.DeleteUserResponse")
     @Action(input = "http://service.foodreservation.com/FoodReservationWS/deleteUserRequest", output = "http://service.foodreservation.com/FoodReservationWS/deleteUserResponse")
@@ -396,44 +255,185 @@ public interface FoodReservationWS {
 
     /**
      * 
+     * @param date
+     * @param notes
+     * @param guests
+     * @param time
+     * @param endTime
      * @param userId
      * @return
-     *     returns java.util.List<java.lang.String>
+     *     returns int
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "viewReservations", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewReservations")
-    @ResponseWrapper(localName = "viewReservationsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewReservationsResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewReservationsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewReservationsResponse")
-    public List<String> viewReservations(
+    @RequestWrapper(localName = "createReservation", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateReservation")
+    @ResponseWrapper(localName = "createReservationResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateReservationResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/createReservationRequest", output = "http://service.foodreservation.com/FoodReservationWS/createReservationResponse")
+    public int createReservation(
         @WebParam(name = "userId", targetNamespace = "")
-        int userId);
+        int userId,
+        @WebParam(name = "date", targetNamespace = "")
+        String date,
+        @WebParam(name = "time", targetNamespace = "")
+        String time,
+        @WebParam(name = "endTime", targetNamespace = "")
+        String endTime,
+        @WebParam(name = "guests", targetNamespace = "")
+        int guests,
+        @WebParam(name = "notes", targetNamespace = "")
+        String notes);
 
     /**
      * 
-     * @param price
-     * @param name
-     * @param available
-     * @param description
-     * @param category
+     * @param reservationId
      * @return
      *     returns boolean
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addMenuItem", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddMenuItem")
-    @ResponseWrapper(localName = "addMenuItemResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddMenuItemResponse")
-    @Action(input = "http://service.foodreservation.com/FoodReservationWS/addMenuItemRequest", output = "http://service.foodreservation.com/FoodReservationWS/addMenuItemResponse")
-    public boolean addMenuItem(
-        @WebParam(name = "name", targetNamespace = "")
-        String name,
-        @WebParam(name = "category", targetNamespace = "")
-        String category,
-        @WebParam(name = "price", targetNamespace = "")
-        double price,
-        @WebParam(name = "description", targetNamespace = "")
-        String description,
-        @WebParam(name = "available", targetNamespace = "")
-        boolean available);
+    @RequestWrapper(localName = "cancelReservation", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CancelReservation")
+    @ResponseWrapper(localName = "cancelReservationResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CancelReservationResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/cancelReservationRequest", output = "http://service.foodreservation.com/FoodReservationWS/cancelReservationResponse")
+    public boolean cancelReservation(
+        @WebParam(name = "reservationId", targetNamespace = "")
+        int reservationId);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "viewAllReservations", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewAllReservations")
+    @ResponseWrapper(localName = "viewAllReservationsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewAllReservationsResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewAllReservationsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewAllReservationsResponse")
+    public List<String> viewAllReservations();
+
+    /**
+     * 
+     * @param quantity
+     * @param reservationId
+     * @param subtotal
+     * @param menuItemId
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "createOrderItem", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateOrderItem")
+    @ResponseWrapper(localName = "createOrderItemResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.CreateOrderItemResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/createOrderItemRequest", output = "http://service.foodreservation.com/FoodReservationWS/createOrderItemResponse")
+    public boolean createOrderItem(
+        @WebParam(name = "reservationId", targetNamespace = "")
+        int reservationId,
+        @WebParam(name = "menuItemId", targetNamespace = "")
+        int menuItemId,
+        @WebParam(name = "quantity", targetNamespace = "")
+        int quantity,
+        @WebParam(name = "subtotal", targetNamespace = "")
+        double subtotal);
+
+    /**
+     * 
+     * @param reservationId
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "viewOrderItems", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewOrderItems")
+    @ResponseWrapper(localName = "viewOrderItemsResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.ViewOrderItemsResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/viewOrderItemsRequest", output = "http://service.foodreservation.com/FoodReservationWS/viewOrderItemsResponse")
+    public List<String> viewOrderItems(
+        @WebParam(name = "reservationId", targetNamespace = "")
+        int reservationId);
+
+    /**
+     * 
+     * @param username
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getUserRole", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.GetUserRole")
+    @ResponseWrapper(localName = "getUserRoleResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.GetUserRoleResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/getUserRoleRequest", output = "http://service.foodreservation.com/FoodReservationWS/getUserRoleResponse")
+    public String getUserRole(
+        @WebParam(name = "username", targetNamespace = "")
+        String username);
+
+    /**
+     * 
+     * @param phone
+     * @param fullName
+     * @param id
+     * @param email
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "updateUser", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.UpdateUser")
+    @ResponseWrapper(localName = "updateUserResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.UpdateUserResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/updateUserRequest", output = "http://service.foodreservation.com/FoodReservationWS/updateUserResponse")
+    public boolean updateUser(
+        @WebParam(name = "id", targetNamespace = "")
+        int id,
+        @WebParam(name = "fullName", targetNamespace = "")
+        String fullName,
+        @WebParam(name = "email", targetNamespace = "")
+        String email,
+        @WebParam(name = "phone", targetNamespace = "")
+        String phone);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "addTable", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddTable")
+    @ResponseWrapper(localName = "addTableResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.AddTableResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/addTableRequest", output = "http://service.foodreservation.com/FoodReservationWS/addTableResponse")
+    public boolean addTable(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
+     * @param password
+     * @param phone
+     * @param fullName
+     * @param email
+     * @param username
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "register", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.Register")
+    @ResponseWrapper(localName = "registerResponse", targetNamespace = "http://service.foodreservation.com/", className = "com.foodreservation.service.RegisterResponse")
+    @Action(input = "http://service.foodreservation.com/FoodReservationWS/registerRequest", output = "http://service.foodreservation.com/FoodReservationWS/registerResponse")
+    public boolean register(
+        @WebParam(name = "username", targetNamespace = "")
+        String username,
+        @WebParam(name = "password", targetNamespace = "")
+        String password,
+        @WebParam(name = "fullName", targetNamespace = "")
+        String fullName,
+        @WebParam(name = "email", targetNamespace = "")
+        String email,
+        @WebParam(name = "phone", targetNamespace = "")
+        String phone);
 
 }

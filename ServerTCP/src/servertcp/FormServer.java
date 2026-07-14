@@ -77,10 +77,12 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
         log("-- a client disconnected --");
     }
 
-    // send a line to every connected client
-    public void broadCast(String tmp) {
-        for (HandleSocket client : clients) {
-            client.sendMsg(tmp);
+    // send a line to every connected client (pass null for sender to broadcast to all)
+    public void broadCast(String tmp, HandleSocket sender) {
+        for (HandleSocket c : clients) {
+            if (c != sender) {
+                c.sendMsg(tmp);
+            }
         }
     }
 
@@ -153,7 +155,7 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     if (reservationId != -1) {
                         client.sendMsg("OK|" + reservationId);
                         log("Reservation #" + reservationId + " created for user " + userId);
-                        broadCast("RESERVATION_UPDATE|" + reservationId + "|CONFIRMED");
+                        broadCast("RESERVATION_UPDATE|" + reservationId + "|CONFIRMED", client);
                     } else {
                         client.sendMsg("ERR|No table available for that date/time/guest count");
                     }
@@ -165,7 +167,7 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     boolean ok = reservationModel.cancelReservation(reservationId);
                     if (ok) {
                         client.sendMsg("OK|Reservation cancelled");
-                        broadCast("RESERVATION_UPDATE|" + reservationId + "|CANCELLED");
+                        broadCast("RESERVATION_UPDATE|" + reservationId + "|CANCELLED", client);
                     } else {
                         client.sendMsg("ERR|Could not cancel reservation");
                     }
@@ -193,7 +195,7 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     boolean ok = orderModel.createOrderItem(reservationId, menuItemId, quantity, subtotal);
                     if (ok) {
                         client.sendMsg("OK|Order item added");
-                        broadCast("ORDER_UPDATE|" + reservationId + "|PENDING");
+                        broadCast("ORDER_UPDATE|" + reservationId + "|PENDING", client);
                     } else {
                         client.sendMsg("ERR|Could not add order item");
                     }
@@ -206,7 +208,7 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     boolean ok = orderModel.updateStatus(orderItemId, status);
                     if (ok) {
                         client.sendMsg("OK|Order status updated");
-                        broadCast("ORDER_UPDATE|" + orderItemId + "|" + status);
+                        broadCast("ORDER_UPDATE|" + orderItemId + "|" + status, client);
                     } else {
                         client.sendMsg("ERR|Could not update order status");
                     }
@@ -216,6 +218,12 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                 case "GET_ORDER_ITEMS": {
                     int reservationId = Integer.parseInt(parts[1]);
                     ArrayList<String> rows = orderModel.viewOrderItems(reservationId);
+                    client.sendMsg("OK|" + String.join("~", rows));
+                    break;
+                }
+
+                case "GET_ALL_ORDER_ITEMS": {
+                    ArrayList<String> rows = orderModel.viewAllOrderItems();
                     client.sendMsg("OK|" + String.join("~", rows));
                     break;
                 }
@@ -240,7 +248,7 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     boolean ok = tableModel.updateStatus(tableId, status);
                     if (ok) {
                         client.sendMsg("OK|Table status updated");
-                        broadCast("TABLE_UPDATE|" + tableId + "|" + status);
+                        broadCast("TABLE_UPDATE|" + tableId + "|" + status, client);
                     } else {
                         client.sendMsg("ERR|Could not update table status");
                     }
@@ -354,7 +362,7 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         String msg = txtPesan.getText();
         log("Server (broadcast): " + msg);
-        broadCast("ANNOUNCE|" + msg);
+        broadCast("ANNOUNCE|" + msg, null);
         txtPesan.setText("");
     }//GEN-LAST:event_btnSendActionPerformed
 

@@ -23,6 +23,25 @@ public class FormMenuManagement extends javax.swing.JFrame {
         initComponents();
         this.socket = socket;
         this.currentUser = username;
+        loadAllMenuItems();
+    }
+
+    private void loadAllMenuItems() {
+        try {
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable2.getModel();
+            model.setRowCount(0);
+            for (String data : wsPort.viewMenuItems()) {
+                String[] parts = data.split(";");
+                String nama = parts[1];
+                String kategori = parts[2];
+                double harga = Double.parseDouble(parts[3]);
+                String keterangan = parts[4];
+                String status = parts[5];
+                model.addRow(new Object[]{nama, kategori, harga, keterangan, status});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat data menu: " + e.getMessage());
+        }
     }
 
     /**

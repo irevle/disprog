@@ -68,7 +68,7 @@ public class OrderItem extends MyModel {
         try {
             if (!MyModel.conn.isClosed()) {
                 PreparedStatement sql = (PreparedStatement) MyModel.conn.prepareStatement(
-                    "SELECT oi.*, m.name FROM order_items oi "
+                    "SELECT oi.*, m.name, m.category, m.price FROM order_items oi "
                   + "JOIN menu_items m ON oi.menu_item_id = m.id "
                   + "WHERE oi.reservation_id = ?"
                 );
@@ -79,6 +79,8 @@ public class OrderItem extends MyModel {
                         this.result.getInt("id") + ";"
                       + this.result.getInt("reservation_id") + ";"
                       + this.result.getString("name") + ";"
+                      + this.result.getString("category") + ";"
+                      + this.result.getDouble("price") + ";"
                       + this.result.getInt("quantity") + ";"
                       + this.result.getDouble("subtotal") + ";"
                       + this.result.getString("status")
@@ -88,6 +90,34 @@ public class OrderItem extends MyModel {
             }
         } catch (Exception e) {
             System.out.println("Error viewOrderItems " + e);
+        }
+        return collections;
+    }
+
+    public ArrayList<String> viewAllOrderItems() {
+        ArrayList<String> collections = new ArrayList<>();
+        try {
+            if (!MyModel.conn.isClosed()) {
+                this.statement = (Statement) MyModel.conn.createStatement();
+                this.result = this.statement.executeQuery(
+                    "SELECT oi.*, m.name, m.category, m.price FROM order_items oi "
+                  + "JOIN menu_items m ON oi.menu_item_id = m.id"
+                );
+                while (this.result.next()) {
+                    collections.add(
+                        this.result.getInt("id") + ";"
+                      + this.result.getInt("reservation_id") + ";"
+                      + this.result.getString("name") + ";"
+                      + this.result.getString("category") + ";"
+                      + this.result.getDouble("price") + ";"
+                      + this.result.getInt("quantity") + ";"
+                      + this.result.getDouble("subtotal") + ";"
+                      + this.result.getString("status")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error viewAllOrderItems " + e);
         }
         return collections;
     }

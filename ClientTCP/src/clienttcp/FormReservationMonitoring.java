@@ -21,7 +21,22 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
         initComponents();
         this.socket = socket;
         this.currentUser = username;
-        this.userId = userId; 
+        this.userId = userId;
+        loadAllReservations();
+    }
+
+    private void loadAllReservations() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            String[] data = socket.getAllReservations();
+            for (String row : data) {
+                String[] parts = row.split(";");
+                model.addRow(new Object[]{parts[3], parts[4], parts[2], parts[6], parts[7]});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
+        }
     }
 
     /**
@@ -77,23 +92,12 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Tanggal", "Jam", "Meja", "Jumlah Tamu", "Status"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ) );
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setText("No Meja");
@@ -329,9 +333,7 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
             for (String row : data) {
                 if (row.toLowerCase().contains(keyword.toLowerCase())) {
                     String[] parts = row.split(";");
-                    int meja = Integer.parseInt(parts[2]);
-                    int tamu = Integer.parseInt(parts[6]);
-                    model.addRow(new Object[]{parts[3], parts[4], meja, tamu, parts[7]});
+                    model.addRow(new Object[]{parts[3], parts[4], parts[2], parts[6], parts[7]});
                 }
             }
         } catch (Exception e) {

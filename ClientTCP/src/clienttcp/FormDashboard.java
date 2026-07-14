@@ -170,7 +170,7 @@ public class FormDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonHistoryActionPerformed
 
     private void jButtonMenuOrderingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMenuOrderingActionPerformed
-        FormMenuOrdering menuForm = new FormMenuOrdering(socket, currentUser);
+        FormMenuOrdering menuForm = new FormMenuOrdering(socket, currentUser, userId);
         menuForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonMenuOrderingActionPerformed

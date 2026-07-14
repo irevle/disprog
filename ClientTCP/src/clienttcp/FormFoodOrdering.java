@@ -3,7 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package clienttcp;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.*;
 
 /**
  *
@@ -12,6 +16,7 @@ import javax.swing.JOptionPane;
 public class FormFoodOrdering extends javax.swing.JFrame {
     private String currentUser;
     private SocketClient socket;
+    private ArrayList<Integer> orderItemIds = new ArrayList<Integer>();
     /**
      * Creates new form FormFoodOrdering
      */
@@ -19,6 +24,46 @@ public class FormFoodOrdering extends javax.swing.JFrame {
         initComponents();
         this.socket = socket;
         this.currentUser = username;
+        loadMenuItems();
+
+        jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int row = jTable1.getSelectedRow();
+                    if (row != -1) {
+                        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                        jTextFieldNamaMenu.setText(model.getValueAt(row, 0).toString());
+                        jTextFieldKategori.setText(model.getValueAt(row, 1).toString());
+                        jTextFieldHarga.setText(model.getValueAt(row, 2).toString());
+                        jTextFieldQuantity.setText(model.getValueAt(row, 3).toString());
+                        jTextFieldSubtotal.setText(model.getValueAt(row, 4).toString());
+                        jTextFieldSatus.setText(model.getValueAt(row, 5).toString());
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadMenuItems() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            orderItemIds.clear();
+            String[] items = socket.getAllOrderItems();
+            for (String item : items) {
+                String[] parts = item.split(";");
+                orderItemIds.add(Integer.parseInt(parts[0]));
+                String nama = parts[2];
+                String kategori = parts[3];
+                double harga = Double.parseDouble(parts[4]);
+                int qty = Integer.parseInt(parts[5]);
+                double subtotal = Double.parseDouble(parts[6]);
+                String status = parts[7];
+                model.addRow(new Object[]{nama, kategori, harga, qty, subtotal, status});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
+        }
     }
 
     /**
@@ -263,15 +308,17 @@ public class FormFoodOrdering extends javax.swing.JFrame {
         }
 
         try {
-            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+            int id = orderItemIds.get(selectedRow);
+            String nama = jTextFieldNamaMenu.getText();
+            String kategori = jTextFieldKategori.getText();
+            double harga = Double.parseDouble(jTextFieldHarga.getText());
+            int qty = Integer.parseInt(jTextFieldQuantity.getText());
+            double subtotal = Double.parseDouble(jTextFieldSubtotal.getText());
+            String status = jTextFieldSatus.getText();
 
-            String nama = (String) model.getValueAt(selectedRow, 0);
-            String kategori = (String) model.getValueAt(selectedRow, 1);
-            double harga = Double.parseDouble(model.getValueAt(selectedRow, 2).toString());
-            int qty = Integer.parseInt(model.getValueAt(selectedRow, 3).toString());
-            double subtotal = Double.parseDouble(model.getValueAt(selectedRow, 4).toString());
-            String status = (String) model.getValueAt(selectedRow, 5);
+            socket.updateOrderStatus(id, status);
 
+            loadMenuItems();
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());

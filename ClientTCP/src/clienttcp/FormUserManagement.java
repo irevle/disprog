@@ -24,6 +24,24 @@ public class FormUserManagement extends javax.swing.JFrame {
         initComponents();
         this.socket = socket;
         this.currentUser = username;
+        loadAllUsers();
+    }
+
+    private void loadAllUsers() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            for (String data : wsPort.viewUsers()) {
+                String[] parts = data.split(";");
+                String username = parts[1];
+                String email = parts[3];
+                String phone = parts[4];
+                String role = parts[5];
+                model.addRow(new Object[]{username, email, phone, role});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat data user: " + e.getMessage());
+        }
     }
 
     /**
@@ -55,23 +73,12 @@ public class FormUserManagement extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Username", "Email", "Password", "Role"
+                "Username", "Email", "Phone", "Role"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ) );
         jScrollPane1.setViewportView(jTable1);
 
         jButtonBack.setText("Back");
@@ -229,6 +236,7 @@ public class FormUserManagement extends javax.swing.JFrame {
                 }
             }
 
+            loadAllUsers();
             JOptionPane.showMessageDialog(this, "Perubahan berhasil disimpan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal simpan perubahan: " + e.getMessage());
@@ -254,7 +262,7 @@ public class FormUserManagement extends javax.swing.JFrame {
                 }
             }
 
-            model.removeRow(selectedRow);
+            loadAllUsers();
             JOptionPane.showMessageDialog(this, "User berhasil dihapus!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal hapus user: " + e.getMessage());
@@ -269,10 +277,7 @@ public class FormUserManagement extends javax.swing.JFrame {
             String role = (String) jComboBox1.getSelectedItem();
 
             wsPort.register(username, password, "", email, "");
-
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.addRow(new Object[]{username, email, password, role});
-
+            loadAllUsers();
             JOptionPane.showMessageDialog(this, "User berhasil ditambahkan!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal tambah user: " + e.getMessage());
