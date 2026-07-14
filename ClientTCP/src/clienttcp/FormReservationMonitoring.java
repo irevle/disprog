@@ -13,13 +13,15 @@ import javax.swing.JOptionPane;
 public class FormReservationMonitoring extends javax.swing.JFrame {
     private String currentUser;
     private SocketClient socket;
+    private int userId;
     /**
      * Creates new form FormReservationMonitoring
      */
-    public FormReservationMonitoring(SocketClient socket, String username) {
+    public FormReservationMonitoring(SocketClient socket, String username, int userId) {
         initComponents();
         this.socket = socket;
         this.currentUser = username;
+        this.userId = userId; 
     }
 
     /**
@@ -276,7 +278,7 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
             int tamu = Integer.parseInt(jTextFieldPassword.getText());
             String status = (String) jComboBox1.getSelectedItem();
 
-            int userId = 1;
+            int userId = this.userId;
 
             int reservationId = socket.reserve(userId, tanggal, jam, jam, tamu, status);
 
@@ -368,7 +370,7 @@ public class FormReservationMonitoring extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new FormReservationMonitoring(new SocketClient(), "guest").setVisible(true);
+                    new FormReservationMonitoring(new SocketClient(), "guest", 0).setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
