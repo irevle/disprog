@@ -10,11 +10,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
- * One thread per connected client. Reads command lines from the socket and
- * hands them off to FormServer.handleCommand() for the actual business logic.
- * This class does NOT talk to the database directly - it only knows about
- * sockets and text.
- *
+ * 
  * @author alievar
  */
 public class HandleSocket extends Thread {
@@ -36,7 +32,6 @@ public class HandleSocket extends Thread {
         }
     }
 
-    // send one line back to just THIS client (a direct reply, or a broadcast)
     public void sendMsg(String tmp) {
         try {
             out.writeBytes(tmp + "\n");
@@ -52,7 +47,6 @@ public class HandleSocket extends Thread {
             try {
                 String command = in.readLine();
                 if (command == null) {
-                    // client disconnected
                     parent.removeClient(this);
                     break;
                 }

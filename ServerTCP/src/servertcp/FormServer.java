@@ -18,17 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * TCP Server for the Food Reservation and Ordering System.
- * Listens for client connections, and for each one spins up a HandleSocket
- * thread. Commands coming from clients are pipe-delimited strings, e.g.
- *   LOGIN|username|password
- *   RESERVE|userId|date|time|endTime|guests|notes
- * Responses sent back follow the same style:
- *   OK|...data...
- *   ERR|message
- * Rows inside a response are separated by "~", fields inside a row by ";"
- * (this matches the format Person 3 already used in FoodReservationWS).
- *
+ * 
  * @author alievar
  */
 public class FormServer extends javax.swing.JFrame implements Runnable {
@@ -38,7 +28,6 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
     Thread t;
     ArrayList<HandleSocket> clients = new ArrayList<HandleSocket>();
 
-    // model instances - reused across all commands (matches Person 3's WS pattern)
     User userModel;
     Table tableModel;
     MenuItem menuModel;
@@ -67,7 +56,6 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
         }
     }
 
-    // prints a line to the server's log window
     public void log(String msg) {
         txtChat.append(msg + "\n");
     }
@@ -77,7 +65,6 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
         log("-- a client disconnected --");
     }
 
-    // send a line to every connected client (pass null for sender to broadcast to all)
     public void broadCast(String tmp, HandleSocket sender) {
         for (HandleSocket c : clients) {
             if (c != sender) {
@@ -86,11 +73,6 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
         }
     }
 
-    /**
-     * Main dispatch: parses "COMMAND|arg1|arg2|..." and routes to the
-     * matching business method. Reply goes back to the requesting client only;
-     * broadCast() is used separately for real-time updates to everyone else.
-     */
     public void handleCommand(HandleSocket client, String commandLine) {
         try {
             String[] parts = commandLine.split("\\|", -1);
@@ -104,7 +86,7 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
                     boolean ok = userModel.checkLogin(username, password);
                     if (ok) {
                         String role = userModel.getUserRole(username);
-                        int userId = userModel.getUserId(username);  // need to add this method
+                        int userId = userModel.getUserId(username); 
                         client.sendMsg("OK|" + role + "|" + userId);
                         log(username + " logged in");
                     } else {
@@ -375,7 +357,6 @@ public class FormServer extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    // lets the admin sitting at the server broadcast a plain announcement to everyone
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         String msg = txtPesan.getText();
         log("Server (broadcast): " + msg);

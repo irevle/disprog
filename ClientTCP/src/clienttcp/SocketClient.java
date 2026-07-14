@@ -21,7 +21,7 @@ public class SocketClient {
         socket = new Socket("localhost", 6000);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new DataOutputStream(socket.getOutputStream());
-        reader.readLine(); // consume welcome "OK|Connected..."
+        reader.readLine();
     }
 
     private String sendCommand(String cmd) throws IOException {
@@ -32,7 +32,6 @@ public class SocketClient {
         return reader.readLine();
     }
 
-    // Returns [role, userId] on success, null on failure
     public String[] login(String username, String password) throws IOException {
         String res = sendCommand("LOGIN|" + username + "|" + password);
         if (res.startsWith("OK|")) {
